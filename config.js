@@ -5,7 +5,7 @@
  * must be acknowledged by the server before the UI may display success.
  */
 window.WEBFORGE_SITE_URL = "https://acmchapter-psu.github.io/acm-webforge-2026/";
-window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxvLmzRRi2vB-D3Wp6PAcBImrtQpEW-Wzo8qzlzXUS-i8INjMfHs_CqoRsuYKIHd-9U/exec";
+window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd3b_9LXRksiTaZiw-jNwIKgfj7UzkqnxY9yFfQrGe4BhLnKMOq5/exec";
 
 /*
  * Reliability guard for team-formation.html.

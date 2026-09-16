@@ -595,7 +595,7 @@
 "INSTRUCTOR // SHOUG ALOMRAN": "المدربة // شوق العمران",
 "initializing training sequence...": "بدء تسلسل التدريب...",
 "3 modules detected": "تم رصد 3 وحدات",
-"final destination: programming_jam": "الوجهة النهائية: جام_البرمجة",
+"final destination: webforge": "الوجهة النهائية: ويب_فورج",
 "Planning &": "التخطيط",
 "Development Workflow": "وسير عمل التطوير",
 "Understand requirements & constraints": "افهم المتطلبات والقيود",

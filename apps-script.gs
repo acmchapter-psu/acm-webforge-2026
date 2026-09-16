@@ -7,7 +7,7 @@
  *   event=jam26 -> jam26
  *   event=ctf30 -> ctf30
  *
- * FAQ messages from JAM.26 still use the spreadsheet this script is attached to.
+ * FAQ messages use the spreadsheet this script is attached to.
  */
 
 var REGISTRATION_SPREADSHEET_ID = '1WtNGmVYO8hk_w3I37n1T6wS9_z_dTyTPW4fTHZ4lW3s';
