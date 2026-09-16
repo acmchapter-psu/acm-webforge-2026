@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://acmchapter-psu.github.io/acm-webforge-2026/sitemap.xml
+Sitemap: https://acmchapter-psu.github.io/acm-webforge-2026/sitemap.xml

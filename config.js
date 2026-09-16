@@ -1,9 +1,10 @@
 /*!
- * JAM.26 — shared front-end config.
+ * WebForge 2026 — shared front-end config.
  *
  * The Apps Script Web App URL is public by design. Registration submissions
  * must be acknowledged by the server before the UI may display success.
  */
+window.WEBFORGE_SITE_URL = "https://acmchapter-psu.github.io/acm-webforge-2026/";
 window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxvLmzRRi2vB-D3Wp6PAcBImrtQpEW-Wzo8qzlzXUS-i8INjMfHs_CqoRsuYKIHd-9U/exec";
 
 /*

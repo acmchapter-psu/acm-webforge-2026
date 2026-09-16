@@ -1,14 +1,14 @@
-# ACM Programming Jam 2026
+# ACM WebForge 2026
 
-Official website for **ACM Programming Jam 2026 (JAM.26)**.
+Official website for **ACM WebForge 2026 (WebForge 2026)**.
 
-JAM.26 is an AI-assisted web engineering event designed to give students hands-on experience with the process of taking an idea from planning to production.
+WebForge 2026 is an AI-assisted web engineering event designed to give students hands-on experience with the process of taking an idea from planning to production.
 
-Participants prepare through a series of workshops before applying what they have learned during the Programming Jam competition.
+Participants prepare through a series of workshops before applying what they have learned during the WebForge competition.
 
-## About JAM.26
+## About WebForge 2026
 
-The Programming Jam focuses on the modern web development workflow.
+The WebForge focuses on the modern web development workflow.
 
 Participants learn how to:
 
@@ -31,7 +31,7 @@ Participants may use AI to generate part or all of their application. The emphas
 
 ## Website
 
-The JAM.26 website contains information and resources for participants, including:
+The WebForge 2026 website contains information and resources for participants, including:
 
 - Home
 - Workshops
@@ -75,7 +75,7 @@ The website itself may use a subset of these technologies.
 The project structure will evolve as development continues.
 
 ```text
-acm-programming-jam-2026/
+acm-webforge-2026/
 ├── src/
 ├── public/
 ├── README.md
