@@ -61,16 +61,19 @@
     "Brief: One shared application challenge": "الوصف: تحدي تطبيق واحد مشترك",
     "Preparation: 3 workshop days": "التحضير: 3 أيام ورش",
     "Laptop: Bring your own (required)": "اللابتوب: أحضر جهازك الخاص (إلزامي)",
-    "Workshop location: E231": "مكان الورش: E231",
+    "Workshop location: E231 (hybrid: in person or online)":
+      "مكان الورش: E231 (حضوري أو عن بُعد)",
+    "Competition format: In person only":
+      "المسابقة: حضوري فقط",
     "Time: 4:00 PM - 6:00 PM": "الوقت: 4:00 م - 6:00 م",
-    "11 October 2026 // 4:00 PM - 6:00 PM // E231":
-      "11 أكتوبر 2026 // 4:00 م - 6:00 م // E231",
-    "12 October 2026 // 4:00 PM - 6:00 PM // E231":
-      "12 أكتوبر 2026 // 4:00 م - 6:00 م // E231",
-    "14 October 2026 // 4:00 PM - 6:00 PM // E231":
-      "14 أكتوبر 2026 // 4:00 م - 6:00 م // E231",
-    "Workshops: 11, 12 & 14 October 2026 in E231 // Competition: 17 October 2026 // Competition location: TBD":
-      "الورش: 11 و12 و14 أكتوبر 2026 في E231 // المسابقة: 17 أكتوبر 2026 // مكان المسابقة: يُعلن لاحقًا",
+    "11 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
+      "11 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
+    "12 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
+      "12 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
+    "14 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
+      "14 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
+    "Workshops: 11, 12 & 14 October 2026 in E231 (hybrid) // Competition: 17 October 2026, in person only // Competition location: TBD":
+      "الورش: 11 و12 و14 أكتوبر 2026 في E231 (حضوري وعن بُعد) // المسابقة: 17 أكتوبر 2026، حضوري فقط // مكان المسابقة: يُعلن لاحقًا",
     "Duration: TBD": "المدة: يُعلن لاحقًا",
     "## Toolchain": "## الأدوات",
     The: "",
@@ -355,8 +358,8 @@
     "> Are there preparation workshops?": "> فيه ورش تحضيرية؟",
     "WebForge 2026 includes three workshop days designed to prepare participants for the development workflow they will use during the competition.":
       "WebForge 2026 يتضمن ثلاثة أيام ورش مصمّمة لتجهيز المشاركين لسير العمل اللي بيستخدمونه في المسابقة.",
-    "WebForge 2026 includes three workshop days on 11, 12, and 14 October 2026, all developed and taught by Shoug Alomran. Competition day is 17 October 2026.":
-      "يتضمن WebForge 2026 ثلاثة أيام ورش في 11 و12 و14 أكتوبر 2026، وجميعها من إعداد وتقديم شوق العمران. ويوم المسابقة هو 17 أكتوبر 2026.",
+    "WebForge 2026 includes three workshop days on 11, 12, and 14 October 2026, all developed and taught by Shoug Alomran. Workshops are hybrid, so you can attend in person in E231 or online. Competition day is 17 October 2026 and is in person only.":
+      "يتضمن WebForge 2026 ثلاثة أيام ورش في 11 و12 و14 أكتوبر 2026، وجميعها من إعداد وتقديم شوق العمران. الورش بنظام هجين، تقدر تحضرها حضوريًا في E231 أو عن بُعد. ويوم المسابقة هو 17 أكتوبر 2026 وحضوري فقط.",
     "> What will the workshops teach?": "> وش بتعلّم الورش؟",
     "Day 01 covers planning and the development workflow. Day 02 covers full-stack development and debugging. Day 03 covers deployment, domains, search discovery, and performance. Together they walk through the same workflow used on competition day.":
       "اليوم 01 يغطي التخطيط وسير عمل التطوير. اليوم 02 يغطي التطوير المتكامل وتصحيح الأخطاء. اليوم 03 يغطي النشر والنطاقات ومحركات البحث والأداء. وكلها مع بعض تمشي على نفس سير العمل المستخدم يوم المسابقة.",
@@ -743,7 +746,10 @@
     "All workshops are developed and taught by Shoug Alomran.":
       "جميع الورش من إعداد وتقديم شوق العمران.",
     "INSTRUCTOR // SHOUG ALOMRAN": "المدربة // شوق العمران",
-    "LOCATION // E231": "المكان // E231",
+    "LOCATION // E231":
+      "المكان // E231",
+    "FORMAT // HYBRID (IN PERSON OR ONLINE)":
+      "الصيغة // حضوري أو عن بُعد",
     "TIME // 4:00 PM - 6:00 PM": "الوقت // 4:00 م - 6:00 م",
     "initializing training sequence...": "بدء تسلسل التدريب...",
     "3 modules detected": "تم رصد 3 وحدات",
@@ -793,8 +799,8 @@
       "مرحلة التحضير الأخيرة. خُذ التطبيق من localhost إلى رابط إنتاج حقيقي، اربطه بنطاق، خلّه قابلًا للاكتشاف، وقِس أداءه.",
     "MODULE_FOCUS:": "تركيز_الوحدة:",
     "Deploy → Domain → Index → Measure.": "انشر ← اربط النطاق ← فهرِس ← قِس.",
-    "// Sessions run 4:00 PM - 6:00 PM in E231.":
-      "// الجلسات من 4:00 م إلى 6:00 م في E231.",
+    "// Sessions run 4:00 PM - 6:00 PM in E231. Hybrid: join in person or online.":
+      "// الجلسات من 4:00 م إلى 6:00 م في E231. حضوري أو عن بُعد، اختر اللي يناسبك.",
     "Deployment Readiness Tracker": "متتبّع الجاهزية للنشر",
     "Core Features": "الميزات الأساسية",
     PASS: "ناجح",
@@ -1149,8 +1155,8 @@
     "Ask the WebForge 2026 organizers": "اسأل منظمي WebForge 2026",
     open: "مفتوح",
     /* ---- added: missing strings and script-set messages ---- */
-    "/COMPETITION // 17 OCTOBER 2026 // TIME & LOCATION TBD":
-      "/المسابقة // 17 أكتوبر 2026 // الوقت والموقع سيُعلنان لاحقًا",
+    "/COMPETITION // 17 OCTOBER 2026 // IN PERSON ONLY // TIME & LOCATION TBD":
+      "/المسابقة // 17 أكتوبر 2026 // حضوري فقط // الوقت والموقع سيُعلنان لاحقًا",
     "// JUDGING PROCESS":
       "// آلية التحكيم",
     "What teams should prepare":
@@ -1177,8 +1183,8 @@
       "الورش: 11 و12 و14 أكتوبر 2026",
     "Competition: 17 October 2026":
       "المسابقة: 17 أكتوبر 2026",
-    "17 October 2026 // TIME & LOCATION TBD":
-      "17 أكتوبر 2026 // الوقت والموقع سيُعلنان لاحقًا",
+    "17 October 2026 // IN PERSON ONLY // TIME & LOCATION TBD":
+      "17 أكتوبر 2026 // حضوري فقط // الوقت والموقع سيُعلنان لاحقًا",
     "PLAN → BUILD → DEBUG → DEPLOY → ADAPT → PRESENT":
       "خطّط ← ابنِ ← صحّح ← انشر ← تكيّف ← اعرض",
     "You may register alone. The team-formation process can also help individual participants join or create a team.":
