@@ -1,270 +1,472 @@
 /**
- * ACM PSU public event registration endpoint.
+ * Canonical public event intake. Load alongside Code.gs; no other doPost/doGet.
  *
- * One deployed Apps Script web app accepts registrations from both event sites
- * and writes them into the single ACM PSU Club Records workbook.
+ * Dynamic: any event tab in the registration workbook accepts sign-ups without
+ * code changes. The form posts `event=<tab name>` and one field per column,
+ * named either like the header ("Full Name") or in camelCase ("fullName").
+ * Columns are read from the tab's header row at submit time.
  *
- *   event=jam26 -> WebForge26
- *   event=ctf30 -> ctf30
- *
- * FAQ messages use the spreadsheet this script is attached to.
+ * Canonical club tabs (People, Members, ...) can never be written from here.
  */
-
 var REGISTRATION_SPREADSHEET_ID = '1wXP3WvqcjnDEOe_sDSGXR-Z6HKvjnufarA4r-CovVEU';
-var JAM_SHEET = 'WebForge26';
-var CTF_SHEET = 'ctf30';
-var MESSAGES_SHEET = 'Messages';
-var ORGANIZER_EMAIL = 'shoug.alomran@shoug-tech.com';
+var REGISTRATION_VERSION = '2026-09-29.2';
+var REGISTRATION_SOURCE = 'acm-event-registration';
 
-var JAM_FIELDS = {
-  fullName:        'Full Name',
-  universityId:    'University ID',
-  universityEmail: 'University Email',
-  phoneNumber:     'Phone Number',
-  major:           'Major',
-  teamName:        'Team Name',
-  teamMembers:     'Team Members'
+/**
+ * Event keys whose tab has a different name. New events need no entry here:
+ * `event=webforge26` finds the "WebForge26" tab on its own (case, spaces and
+ * punctuation are ignored when matching).
+ */
+var REGISTRATION_TAB_ALIASES = { jam26: 'WebForge26' };
+
+/**
+ * Tabs the public form may never write to. Code.gs's CANONICAL_SHEETS are
+ * added automatically, so new canonical tabs are protected too.
+ */
+var REGISTRATION_PROTECTED_TABS = [
+  'People', 'Membership Applications', 'Members', 'Club Positions',
+  'Opportunity Positions', 'Position Applications', 'Event Participation',
+  'Contributions', 'Inquiries', 'University Export Log', 'Messages'
+];
+
+/** Form keys that carry request metadata, never sheet data. */
+var REGISTRATION_RESERVED_FIELDS = ['event', 'requestId', 'website', 'type'];
+
+/**
+ * Optional stricter rules for specific events. Events not listed here use the
+ * dynamic rules in handleDynamicRegistration_.
+ */
+var REGISTRATION_EVENTS = {
+  jam26: {
+    fields: {
+      fullName: 'Full Name',
+      universityId: 'University ID',
+      universityEmail: 'University Email',
+      phoneNumber: 'Phone Number',
+      major: 'Major',
+      teamName: 'Team Name',
+      teamMembers: 'Team Members'
+    },
+    required: ['fullName', 'universityId', 'universityEmail', 'phoneNumber', 'major', 'teamName'],
+    emailFields: ['universityEmail'],
+    // Comma-separated email lists, with the maximum number of entries.
+    emailListFields: { teamMembers: 10 },
+    optionalGroup: [],
+    enums: {},
+    limits: {
+      fullName: 120, universityId: 40, universityEmail: 254, phoneNumber: 40,
+      major: 120, teamName: 120, teamMembers: 1500
+    },
+    uniqueChecks: [
+      { fields: ['universityEmail'], message: 'this participant is already registered' },
+      { fields: ['universityId'], message: 'this participant is already registered' }
+    ],
+    rateFields: ['universityEmail', 'universityId']
+  },
+
+  ctf30: {
+    fields: {
+      teamName: 'Team Name',
+      captainName: 'Captain Name',
+      captainId: 'Captain University ID',
+      captainEmail: 'Captain University Email',
+      captainPhone: 'Captain Phone Number',
+      captainMajor: 'Captain Major',
+      member2Name: 'Member 2 Name',
+      member2Id: 'Member 2 University ID',
+      member2Email: 'Member 2 University Email',
+      member2Major: 'Member 2 Major',
+      member3Name: 'Member 3 Name',
+      member3Id: 'Member 3 University ID',
+      member3Email: 'Member 3 University Email',
+      member3Major: 'Member 3 Major',
+      experience: 'Experience Level'
+    },
+    required: [
+      'teamName', 'experience',
+      'captainName', 'captainId', 'captainEmail', 'captainPhone', 'captainMajor',
+      'member2Name', 'member2Id', 'member2Email', 'member2Major'
+    ],
+    emailFields: ['captainEmail', 'member2Email'],
+    emailListFields: {},
+    // All four or none, so a half-filled third member never lands.
+    optionalGroup: ['member3Name', 'member3Id', 'member3Email', 'member3Major'],
+    optionalGroupEmails: ['member3Email'],
+    enums: { experience: ['Beginner', 'Intermediate', 'Advanced'] },
+    limits: {
+      teamName: 120, experience: 40,
+      captainName: 120, captainId: 40, captainEmail: 254, captainPhone: 40, captainMajor: 120,
+      member2Name: 120, member2Id: 40, member2Email: 254, member2Major: 120,
+      member3Name: 120, member3Id: 40, member3Email: 254, member3Major: 120
+    },
+    uniqueChecks: [
+      {
+        fields: ['captainEmail', 'member2Email', 'member3Email'],
+        message: 'one of these participants is already registered'
+      },
+      {
+        fields: ['captainId', 'member2Id', 'member3Id'],
+        message: 'one of these participants is already registered'
+      },
+      { fields: ['teamName'], message: 'that team name is already taken' }
+    ],
+    // Nobody may occupy two slots on the same team.
+    distinctWithinRow: [
+      {
+        fields: ['captainEmail', 'member2Email', 'member3Email'],
+        message: 'each member needs a different university email'
+      },
+      {
+        fields: ['captainId', 'member2Id', 'member3Id'],
+        message: 'each member needs a different university ID'
+      }
+    ],
+    rateFields: ['captainEmail', 'teamName']
+  }
 };
 
-var CTF_FIELDS = {
-  teamName:        'Team Name',
-  captainName:     'Captain Name',
-  captainId:       'Captain University ID',
-  captainEmail:    'Captain University Email',
-  captainPhone:    'Captain Phone Number',
-  captainMajor:    'Captain Major',
-  member2Name:     'Member 2 Name',
-  member2Id:       'Member 2 University ID',
-  member2Email:    'Member 2 University Email',
-  member2Major:    'Member 2 Major',
-  member3Name:     'Member 3 Name',
-  member3Id:       'Member 3 University ID',
-  member3Email:    'Member 3 University Email',
-  member3Major:    'Member 3 Major',
-  experience:      'Experience Level'
-};
+/** Same window both front-ends wait on before giving up, less a safety margin. */
+var REGISTRATION_LOCK_MS = 15000;
+/** Seconds an identical submitter is asked to wait before retrying. */
+var REGISTRATION_RATE_SECONDS = 300;
+var DEFAULT_FIELD_LIMIT = 1500;
+var REGISTRATION_EVENT_PATTERN = /^[A-Za-z0-9][A-Za-z0-9 _.\-]{0,79}$/;
 
-var LIMITS = {
-  fullName: 120,
-  universityId: 40,
-  universityEmail: 254,
-  phoneNumber: 40,
-  major: 120,
-  teamName: 120,
-  teamMembers: 1500,
-  captainName: 120,
-  captainId: 40,
-  captainEmail: 254,
-  captainPhone: 40,
-  captainMajor: 120,
-  member2Name: 120,
-  member2Id: 40,
-  member2Email: 254,
-  member2Major: 120,
-  member3Name: 120,
-  member3Id: 40,
-  member3Email: 254,
-  member3Major: 120,
-  experience: 40,
-  name: 120,
-  email: 254,
-  message: 3000
-};
 
-function doGet() {
-  return page('ACM PSU event registration endpoint is live.');
-}
-
+/**
+ * Public registration intake. Append-only, and never able to read back or
+ * modify existing rows.
+ */
 function doPost(e) {
+  var form = (e && e.parameter) || {};
+  var event = String(form.event || '').trim();
+  var requestId = String(form.requestId || '');
+  var reply = function (message) { return registrationReply(event, message, requestId); };
+  if (!REGISTRATION_EVENT_PATTERN.test(event)) return reply('Error: unsupported event');
+  if (requestId && !/^[a-f0-9]{32}$/.test(requestId)) return registrationReply(event, 'Error: invalid request identifier', '');
+  if (e && e.postData && e.postData.length > 20000) return reply('Error: submission is too large');
+  if (String(form.website || '').trim()) return reply('Error: registration could not be accepted');
   var lock = LockService.getScriptLock();
   try {
-    // Stay inside the 20s timeout the two front-end forms use, so a queued
-    // request still gets an answer instead of the browser giving up first.
-    lock.waitLock(15000);
-    var form = (e && e.parameter) || {};
-    if (form.type === 'contact') return handleContact(form);
-    return String(form.event || 'jam26') === 'ctf30'
-      ? handleCtfRegistration(form)
-      : handleJamRegistration(form);
-  } catch (err) {
-    // Log the detail for the organizers; the browser only sees a safe message.
-    console.error(err);
-    return page('Error: something went wrong on our side. Please try again, or contact the organizers.');
-  } finally {
-    lock.releaseLock();
-  }
-}
+    lock.waitLock(REGISTRATION_LOCK_MS);
+    // Apps Script does not expose the client IP. This is best-effort abuse
+    // protection, not a substitute for a dedicated anti-bot service.
+    var cache = CacheService.getScriptCache();
+    var bucket = 'event-burst:' + Math.floor(Date.now() / 60000);
+    var count = Number(cache.get(bucket) || 0);
+    if (count >= 240) return reply('Error: registration is busy. Please try again in a minute');
+    cache.put(bucket, String(count + 1), 60);
 
-function handleJamRegistration(form) {
-  if (form.website) return page('OK');
-
-  var required = ['fullName', 'universityId', 'universityEmail', 'phoneNumber', 'major', 'teamName'];
-  var missing = requireFields(form, required);
-  if (missing) return page('Error: missing ' + missing);
-
-  var validationError = validateLengths(form, required.concat(['teamMembers']));
-  if (validationError) return page('Error: ' + validationError);
-  if (!isEmail(form.universityEmail)) return page('Error: invalid universityEmail');
-
-  var sheet = registrationSheet(JAM_SHEET);
-  if (duplicateInAnyColumn(sheet, ['University Email', 'University ID'], [form.universityEmail, form.universityId])) {
-    return page('Error: this participant is already registered');
-  }
-
-  var identity = String(form.universityEmail).trim().toLowerCase() + '|' + String(form.universityId).trim();
-  if (!allowRequest('jam26', identity, 300)) return page('Error: please wait before submitting again');
-
-  var writeError = appendMappedRow(sheet, JAM_FIELDS, form);
-  if (writeError) return page('Error: ' + writeError);
-  return page('OK');
-}
-
-function handleCtfRegistration(form) {
-  if (form.website) return page('OK');
-
-  var required = [
-    'teamName', 'captainName', 'captainId', 'captainEmail', 'captainPhone', 'captainMajor',
-    'member2Name', 'member2Id', 'member2Email', 'member2Major', 'experience'
-  ];
-  var missing = requireFields(form, required);
-  if (missing) return page('Error: missing ' + missing);
-
-  var optionalThird = ['member3Name', 'member3Id', 'member3Email', 'member3Major'];
-  var anyThird = optionalThird.some(function (field) { return String(form[field] || '').trim(); });
-  if (anyThird) {
-    var missingThird = requireFields(form, optionalThird);
-    if (missingThird) return page('Error: complete all Member 3 fields');
-  }
-
-  var validationError = validateLengths(form, required.concat(optionalThird));
-  if (validationError) return page('Error: ' + validationError);
-  if (!isEmail(form.captainEmail) || !isEmail(form.member2Email) || (anyThird && !isEmail(form.member3Email))) {
-    return page('Error: invalid university email');
-  }
-
-  var sheet = registrationSheet(CTF_SHEET);
-  var headers = ['Captain University Email', 'Captain University ID', 'Team Name'];
-  var values = [form.captainEmail, form.captainId, form.teamName];
-  if (duplicateInAnyColumn(sheet, headers, values)) return page('Error: this team or captain is already registered');
-
-  var identity = String(form.captainEmail).trim().toLowerCase() + '|' + String(form.teamName).trim().toLowerCase();
-  if (!allowRequest('ctf30', identity, 300)) return page('Error: please wait before submitting again');
-
-  var writeError = appendMappedRow(sheet, CTF_FIELDS, form);
-  if (writeError) return page('Error: ' + writeError);
-  return page('OK');
-}
-
-function registrationSheet(name) {
-  var workbook = SpreadsheetApp.openById(REGISTRATION_SPREADSHEET_ID);
-  var sheet = workbook.getSheetByName(name);
-  if (!sheet) throw new Error('no sheet named "' + name + '"');
-  return sheet;
-}
-
-function appendMappedRow(sheet, mapping, form) {
-  var headers = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1))
-    .getValues()[0]
-    .map(function (h) { return String(h).trim(); });
-
-  // Refuse to write rather than drop a column (or append a blank row into an
-  // empty tab) if the sheet is not set up with the expected header row.
-  var expected = ['Timestamp'].concat(Object.keys(mapping).map(function (f) { return mapping[f]; }));
-  var missing = expected.filter(function (header) { return headers.indexOf(header) === -1; });
-  if (missing.length) {
-    return 'the ' + sheet.getName() + ' sheet is missing these columns: ' + missing.join(', ');
-  }
-
-  var row = new Array(headers.length).fill('');
-
-  Object.keys(mapping).forEach(function (field) {
-    var col = headers.indexOf(mapping[field]);
-    if (col !== -1) row[col] = safeCell(form[field] || '');
-  });
-
-  row[headers.indexOf('Timestamp')] = new Date();
-  sheet.appendRow(row);
-  return '';
-}
-
-function handleContact(form) {
-  if (form.website) return page('OK');
-  if (!form.name || !form.email || !form.message) return page('Error: missing fields');
-
-  var validationError = validateLengths(form, ['name', 'email', 'message']);
-  if (validationError) return page('Error: ' + validationError);
-  if (!isEmail(form.email)) return page('Error: invalid email');
-
-  var normalizedEmail = String(form.email).trim().toLowerCase();
-  if (!allowRequest('contact', normalizedEmail, 60)) return page('Error: please wait before sending another message');
-  if (!allowRequest('contact-duplicate', normalizedEmail + '|' + String(form.message).trim(), 3600)) {
-    return page('Error: duplicate message');
-  }
-
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(MESSAGES_SHEET);
-  if (!sheet) {
-    sheet = ss.insertSheet(MESSAGES_SHEET);
-    sheet.appendRow(['Timestamp', 'Name', 'Email', 'Message']);
-    sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
-  }
-  sheet.appendRow([new Date(), safeCell(form.name), safeCell(form.email), safeCell(form.message)]);
-
-  var to = ORGANIZER_EMAIL || Session.getEffectiveUser().getEmail();
-  MailApp.sendEmail({
-    to: to,
-    replyTo: form.email,
-    subject: 'ACM event question from ' + form.name,
-    body: 'From: ' + form.name + ' <' + form.email + '>\n\n' + form.message +
-      '\n\n— Reply to this email to answer them directly.'
-  });
-
-  return page('OK');
-}
-
-function requireFields(form, fields) {
-  for (var i = 0; i < fields.length; i++) {
-    if (!String(form[fields[i]] || '').trim()) return fields[i];
-  }
-  return '';
-}
-
-function validateLengths(form, fields) {
-  for (var i = 0; i < fields.length; i++) {
-    var field = fields[i];
-    if (String(form[field] || '').length > (LIMITS[field] || 500)) return field + ' is too long';
-  }
-  return '';
-}
-
-function isEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
-}
-
-function safeCell(value) {
-  var text = String(value || '').trim();
-  return /^[=+\-@]/.test(text) ? "'" + text : text;
-}
-
-function duplicateInAnyColumn(sheet, headersToCheck, valuesToCheck) {
-  if (sheet.getLastRow() < 2) return false;
-  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getDisplayValues()[0]
-    .map(function (h) { return String(h).trim(); });
-
-  for (var i = 0; i < headersToCheck.length; i++) {
-    var col = headers.indexOf(headersToCheck[i]);
-    if (col < 0) continue;
-    var target = String(valuesToCheck[i] || '').trim().toLowerCase();
-    if (!target) continue;
-    var existing = sheet.getRange(2, col + 1, sheet.getLastRow() - 1, 1).getDisplayValues();
-    for (var r = 0; r < existing.length; r++) {
-      if (String(existing[r][0]).trim().toLowerCase() === target) return true;
+    // Resolve the worksheet from the workbook itself, never from a sheet ID
+    // or range supplied by the caller.
+    var sheet = registrationSheet_(event);
+    if (!sheet) {
+      console.error('NO EVENT TAB for event "' + event + '"');
+      return reply('Error: registration for this event is not open. Please contact the organizers.');
     }
+    var headers = registrationHeaders_(sheet);
+    var config = Object.prototype.hasOwnProperty.call(REGISTRATION_EVENTS, event) ? REGISTRATION_EVENTS[event] : null;
+    return config
+      ? handleConfiguredRegistration_(event, config, sheet, headers, form)
+      : handleDynamicRegistration_(event, sheet, headers, form);
+  } catch (err) {
+    console.error('Event registration failed: ' + (err && err.message ? err.message : err));
+    return reply('Error: registration could not be confirmed. Contact the organizers before retrying.');
+  } finally {
+    try { lock.releaseLock(); } catch (releaseError) { }
+  }
+}
+
+
+/** Events listed in REGISTRATION_EVENTS: their own required fields and rules. */
+function handleConfiguredRegistration_(event, config, sheet, headers, form) {
+  var reply = function (message) { return registrationReply(event, message, String(form.requestId || '')); };
+  var value = function (field) { return String(form[field] === undefined ? '' : form[field]).trim(); };
+  var i;
+
+  for (i = 0; i < config.required.length; i += 1) {
+    if (!value(config.required[i])) return reply('Error: missing ' + config.required[i]);
+  }
+
+  // Optional block is all-or-nothing.
+  var group = config.optionalGroup || [];
+  var filled = group.filter(function (field) { return value(field); });
+  var hasGroup = group.length > 0 && filled.length === group.length;
+  if (filled.length && !hasGroup) {
+    return reply('Error: complete every optional member field or leave them all blank');
+  }
+
+  var fieldNames = Object.keys(config.fields);
+  for (i = 0; i < fieldNames.length; i += 1) {
+    var limit = config.limits[fieldNames[i]] || DEFAULT_FIELD_LIMIT;
+    if (value(fieldNames[i]).length > limit) return reply('Error: ' + fieldNames[i] + ' is too long');
+  }
+
+  var enumFields = Object.keys(config.enums || {});
+  for (i = 0; i < enumFields.length; i += 1) {
+    if (config.enums[enumFields[i]].indexOf(value(enumFields[i])) === -1) {
+      return reply('Error: invalid ' + enumFields[i]);
+    }
+  }
+
+  var emailFields = (config.emailFields || []).slice();
+  if (hasGroup) emailFields = emailFields.concat(config.optionalGroupEmails || []);
+  for (i = 0; i < emailFields.length; i += 1) {
+    if (!isRegistrationEmail(value(emailFields[i]))) return reply('Error: invalid ' + emailFields[i]);
+  }
+
+  var listFields = Object.keys(config.emailListFields || {});
+  for (i = 0; i < listFields.length; i += 1) {
+    if (!value(listFields[i])) continue;
+    var entries = value(listFields[i]).split(',').map(function (email) { return email.trim(); });
+    var max = config.emailListFields[listFields[i]];
+    if (entries.length > max || entries.some(function (email) { return !isRegistrationEmail(email) || email.length > 254; })) {
+      return reply('Error: enter up to ' + max + ' valid emails separated by commas');
+    }
+  }
+
+  var withinRow = config.distinctWithinRow || [];
+  for (i = 0; i < withinRow.length; i += 1) {
+    var seen = withinRow[i].fields
+      .map(function (f) { return value(f).toLowerCase(); })
+      .filter(function (v) { return v; });
+    if (hasArrayDuplicate(seen)) return reply('Error: ' + withinRow[i].message);
+  }
+
+  // Refuse rather than write a row with silently dropped columns.
+  var missing = fieldNames
+    .map(function (f) { return config.fields[f]; })
+    .filter(function (h) { return registrationColumn_(headers, h) === -1; });
+  if (missing.length) {
+    console.error('MISSING COLUMNS in "' + sheet.getName() + '": ' + missing.join(', '));
+    return reply('Error: registration storage is not ready. Please contact the organizers.');
+  }
+
+  var values = {};
+  fieldNames.forEach(function (f) { values[config.fields[f]] = value(f); });
+
+  var uniqueChecks = (config.uniqueChecks || []).map(function (check) {
+    return {
+      headers: check.fields.map(function (f) { return config.fields[f]; }),
+      values: check.fields.map(value),
+      message: check.message
+    };
+  });
+
+  var identity = (config.rateFields || []).map(function (f) { return value(f).toLowerCase(); }).join('|');
+  return writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, reply);
+}
+
+
+/**
+ * Any other event: the tab's header row is the form definition. Submitted
+ * fields are matched to columns by name; unknown fields are ignored.
+ */
+function handleDynamicRegistration_(event, sheet, headers, form) {
+  var reply = function (message) { return registrationReply(event, message, String(form.requestId || '')); };
+
+  var columns = {};
+  headers.forEach(function (header) {
+    var key = registrationKey_(header);
+    if (key && key !== 'timestamp' && !columns[key]) columns[key] = header;
+  });
+  if (!Object.keys(columns).length) {
+    console.error('EMPTY HEADER ROW in "' + sheet.getName() + '"');
+    return reply('Error: registration storage is not ready. Please contact the organizers.');
+  }
+
+  var values = {};
+  var filledCount = 0;
+  var reserved = REGISTRATION_RESERVED_FIELDS.map(registrationKey_);
+  var names = Object.keys(form);
+  for (var i = 0; i < names.length; i += 1) {
+    var key = registrationKey_(names[i]);
+    if (reserved.indexOf(key) !== -1 || !columns[key]) continue;
+    var text = String(form[names[i]] === undefined ? '' : form[names[i]]).trim();
+    if (text.length > DEFAULT_FIELD_LIMIT) return reply('Error: ' + columns[key] + ' is too long');
+    values[columns[key]] = text;
+    if (text) filledCount += 1;
+  }
+  if (!filledCount) return reply('Error: the form did not send any fields this event collects');
+
+  // Email columns must hold an email; university/student ID and email columns
+  // may not repeat an existing registration for this event.
+  var emailHeaders = [];
+  var idHeaders = [];
+  Object.keys(values).forEach(function (header) {
+    var key = registrationKey_(header);
+    if (key.indexOf('email') !== -1) emailHeaders.push(header);
+    if (/(university|student)id$/.test(key)) idHeaders.push(header);
+  });
+  for (var e = 0; e < emailHeaders.length; e += 1) {
+    var email = values[emailHeaders[e]];
+    if (email && !isRegistrationEmail(email)) return reply('Error: invalid ' + emailHeaders[e]);
+  }
+
+  var emailValues = emailHeaders.map(function (h) { return values[h].toLowerCase(); }).filter(Boolean);
+  if (hasArrayDuplicate(emailValues)) return reply('Error: each person needs a different email');
+
+  var uniqueChecks = [
+    {
+      headers: emailHeaders,
+      values: emailHeaders.map(function (h) { return values[h]; }),
+      message: 'this email is already registered for this event'
+    },
+    {
+      headers: idHeaders,
+      values: idHeaders.map(function (h) { return values[h]; }),
+      message: 'this ID is already registered for this event'
+    }
+  ];
+
+  var identity = emailValues.length
+    ? emailValues.join('|')
+    : Object.keys(values).sort().map(function (h) { return values[h].toLowerCase(); }).join('|');
+  return writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, reply);
+}
+
+
+/** Shared tail: duplicate check, rate limit, then one appended row. */
+function writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, reply) {
+  var duplicate = findExistingRegistration(sheet, headers, uniqueChecks);
+  if (duplicate) return reply('Error: ' + duplicate);
+
+  // Rate limit last, so a rejected attempt never locks out an immediate retry.
+  if (identity && !allowRegistrationRequest(registrationKey_(sheet.getName()), identity, REGISTRATION_RATE_SECONDS)) {
+    return reply('Error: please wait before submitting again');
+  }
+
+  var row = new Array(headers.length);
+  for (var i = 0; i < row.length; i += 1) row[i] = '';
+
+  Object.keys(values).forEach(function (header) {
+    var col = registrationColumn_(headers, header);
+    if (col !== -1) row[col] = safeRegistrationCell(values[header]);
+  });
+
+  var tsCol = registrationColumn_(headers, 'Timestamp');
+  if (tsCol !== -1) row[tsCol] = new Date();
+
+  // appendRow only ever adds a new last row. No existing registration is read
+  // back to the caller, cleared, or overwritten anywhere in this handler.
+  sheet.appendRow(row);
+  SpreadsheetApp.flush();
+  return reply('OK');
+}
+
+
+/**
+ * Finds the event's tab by name (ignoring case, spaces and punctuation), after
+ * applying REGISTRATION_TAB_ALIASES. Protected club tabs are never returned.
+ */
+function registrationSheet_(event) {
+  var alias = Object.prototype.hasOwnProperty.call(REGISTRATION_TAB_ALIASES, event)
+    ? REGISTRATION_TAB_ALIASES[event] : event;
+  var wanted = registrationKey_(alias);
+  if (!wanted) return null;
+
+  var sheets = SpreadsheetApp.openById(REGISTRATION_SPREADSHEET_ID).getSheets();
+  for (var i = 0; i < sheets.length; i += 1) {
+    var name = sheets[i].getName();
+    if (registrationKey_(name) === wanted) return isProtectedRegistrationTab_(name) ? null : sheets[i];
+  }
+  return null;
+}
+
+
+function isProtectedRegistrationTab_(name) {
+  var names = REGISTRATION_PROTECTED_TABS.slice();
+  if (typeof CANONICAL_SHEETS === 'object' && CANONICAL_SHEETS) names = names.concat(Object.keys(CANONICAL_SHEETS));
+  var key = registrationKey_(name);
+  return names.some(function (n) { return registrationKey_(n) === key; });
+}
+
+
+function registrationHeaders_(sheet) {
+  var width = sheet.getLastColumn();
+  if (width < 1) return [];
+  return sheet.getRange(1, 1, 1, width).getDisplayValues()[0]
+    .map(function (h) { return String(h).trim(); });
+}
+
+
+/** Column index of a header, matched the same loose way as tab names. */
+function registrationColumn_(headers, header) {
+  var key = registrationKey_(header);
+  for (var i = 0; i < headers.length; i += 1) {
+    if (registrationKey_(headers[i]) === key) return i;
+  }
+  return -1;
+}
+
+
+/** "Full Name", "fullName" and "full_name" all become "fullname". */
+function registrationKey_(text) {
+  return String(text || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+
+/**
+ * One read of the data range, then every uniqueness rule is answered from it.
+ * Each check lists columns and submitted values; any submitted value found in
+ * any of those columns is a duplicate. Nothing read here is returned.
+ */
+function findExistingRegistration(sheet, headers, checks) {
+  if (!checks.length || sheet.getLastRow() < 2) return '';
+
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, headers.length).getDisplayValues();
+
+  for (var c = 0; c < checks.length; c += 1) {
+    var check = checks[c];
+    var wanted = Object.create(null);
+    var any = false;
+    check.values.forEach(function (v) {
+      v = String(v || '').trim().toLowerCase();
+      if (v) { wanted[v] = true; any = true; }
+    });
+    if (!any) continue;
+
+    for (var h = 0; h < check.headers.length; h += 1) {
+      var col = registrationColumn_(headers, check.headers[h]);
+      if (col === -1) continue;
+      for (var r = 0; r < rows.length; r += 1) {
+        var cell = String(rows[r][col] === undefined ? '' : rows[r][col]).trim().toLowerCase();
+        if (cell && wanted[cell]) return check.message;
+      }
+    }
+  }
+  return '';
+}
+
+
+function hasArrayDuplicate(values) {
+  for (var i = 0; i < values.length; i += 1) {
+    if (values.indexOf(values[i]) !== i) return true;
   }
   return false;
 }
 
-function allowRequest(scope, identity, seconds) {
+
+function isRegistrationEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+}
+
+
+/**
+ * Neutralises spreadsheet formula injection. A leading =, +, - or @ makes
+ * Sheets evaluate the cell, so the value is stored as literal text instead.
+ */
+function safeRegistrationCell(value) {
+  var text = String(value || '').trim();
+  return /^[=+\-@]/.test(text) ? "'" + text : text;
+}
+
+
+/**
+ * Per-identity throttle held in the script cache. Keys are hashed so no email
+ * address or university ID is stored in the cache in readable form.
+ */
+function allowRegistrationRequest(scope, identity, seconds) {
   var digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, scope + '|' + identity);
   var key = Utilities.base64EncodeWebSafe(digest).slice(0, 80);
   var cache = CacheService.getScriptCache();
@@ -273,15 +475,73 @@ function allowRequest(scope, identity, seconds) {
   return true;
 }
 
-function page(msg) {
-  var json = JSON.stringify({ source: 'acm-event-registration', message: String(msg) }).replace(/</g, '\\u003c');
-  // This HTML runs inside Google's nested sandbox frame, so "parent" is Google's
-  // wrapper rather than the site. Post to the top window as well.
-  var relay = 'var m=' + json + ';try{parent.postMessage(m,"*")}catch(e){}' +
+
+/**
+ * The reply both front-ends listen for. `source` must match the tag that the
+ * requesting form filters on, and `event` must echo the event key the form
+ * sent, or that form ignores this message and times out.
+ */
+function registrationReply(event, message, requestId) {
+  var payload = JSON.stringify({
+    source: REGISTRATION_SOURCE, event: String(event),
+    requestId: String(requestId || ''), message: String(message), version: REGISTRATION_VERSION
+  })
+    .replace(/</g, '\\u003c');
+  var relay = 'var m=' + payload + ';' +
+    'try{parent.postMessage(m,"*")}catch(e){}' +
     'try{if(top!==parent)top.postMessage(m,"*")}catch(e){}';
-  // ALLOWALL is load-bearing: HtmlService defaults to X-Frame-Options SAMEORIGIN,
-  // which makes the browser refuse to load this reply inside the event sites'
-  // hidden iframe at all, so both forms always time out with "did not respond".
-  return HtmlService.createHtmlOutput('<p>' + String(msg) + '</p><script>' + relay + '<\/script>')
+  return HtmlService.createHtmlOutput('<p>' + escapeRegistrationHtml(String(message)) + '</p><script>' + relay + '<\/script>')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+
+function escapeRegistrationHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+
+/**
+ * GET is not a registration path and reports nothing about the workbook.
+ */
+function doGet() {
+  return json_({ status: 'ok', message: 'ACM PSU event registration endpoint is live.', version: REGISTRATION_VERSION });
+}
+
+
+/** JSON response helper. */
+function json_(payload) {
+  return ContentService
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+
+/**
+ * Run from the editor (select it next to Debug, then Run) to see which tabs
+ * accept registrations, which event key reaches each, and their columns.
+ */
+function debugRegistrationStorage() {
+  var ss = SpreadsheetApp.openById(REGISTRATION_SPREADSHEET_ID);
+  console.log('Workbook: ' + ss.getName() + ' | script version ' + REGISTRATION_VERSION);
+
+  ss.getSheets().forEach(function (sheet) {
+    var name = sheet.getName();
+    if (isProtectedRegistrationTab_(name)) {
+      console.log('[protected] ' + name);
+      return;
+    }
+    var aliases = Object.keys(REGISTRATION_TAB_ALIASES).filter(function (k) {
+      return registrationKey_(REGISTRATION_TAB_ALIASES[k]) === registrationKey_(name);
+    });
+    console.log('[OPEN] ' + name + ' | event=' + [registrationKey_(name)].concat(aliases).join(' or event=') +
+      ' | columns: ' + JSON.stringify(registrationHeaders_(sheet)));
+  });
+
+  Object.keys(REGISTRATION_EVENTS).forEach(function (event) {
+    var sheet = registrationSheet_(event);
+    console.log('Configured event ' + event + ' -> ' + (sheet ? sheet.getName() : 'NO TAB FOUND'));
+  });
 }
