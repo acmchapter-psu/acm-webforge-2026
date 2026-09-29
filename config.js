@@ -4,8 +4,10 @@
  * The Apps Script Web App URL is public by design. Registration submissions
  * must be acknowledged by the server before the UI may display success.
  */
-window.WEBFORGE_SITE_URL = "https://acmchapter-psu.github.io/acm-webforge-2026/";
-window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd3b_9LXRksiTaZiw-jNwIKgfj7UzkqnxY9yFfQrGe4BhLnKMOq5/exec";
+window.WEBFORGE_SITE_URL =
+  "https://acmchapter-psu.github.io/acm-webforge-2026/";
+window.JAM_ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd3b_9LXRksiTaZiw-jNwIKgfj7UzkqnxY9yFfQrGe4BhLnKMOq5/exec";
 
 /*
  * Reliability guard for team-formation.html.
@@ -16,40 +18,41 @@ window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd
  * the server explicitly returns message === 'OK'.
  */
 (function () {
-  'use strict';
+  "use strict";
 
-  var GOOGLE_ORIGIN = /^https:\/\/([a-z0-9-]+\.)*(googleusercontent\.com|google\.com)$/i;
+  var GOOGLE_ORIGIN =
+    /^https:\/\/([a-z0-9-]+\.)*(googleusercontent\.com|google\.com)$/i;
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function ready(fn) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', fn, { once: true });
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn, { once: true });
     } else {
       fn();
     }
   }
 
   ready(function () {
-    var form = document.getElementById('jamForm');
+    var form = document.getElementById("jamForm");
     if (!form) return;
 
-    var button = document.getElementById('submitBtn');
-    var errorEl = document.getElementById('formError');
-    var successEl = document.getElementById('jamSuccess');
-    var emailInput = document.getElementById('emailInput');
-    var endpoint = window.JAM_ENDPOINT || '';
-    var originalButtonHtml = button ? button.innerHTML : '';
+    var button = document.getElementById("submitBtn");
+    var errorEl = document.getElementById("formError");
+    var successEl = document.getElementById("jamSuccess");
+    var emailInput = document.getElementById("emailInput");
+    var endpoint = window.JAM_ENDPOINT || "";
+    var originalButtonHtml = button ? button.innerHTML : "";
     var busy = false;
 
     function showError(message) {
       if (!errorEl) return;
-      errorEl.textContent = String(message || 'Registration failed.');
-      errorEl.classList.remove('hidden');
-      errorEl.scrollIntoView({ block: 'nearest' });
+      errorEl.textContent = String(message || "Registration failed.");
+      errorEl.classList.remove("hidden");
+      errorEl.scrollIntoView({ block: "nearest" });
     }
 
     function clearError() {
-      if (errorEl) errorEl.classList.add('hidden');
+      if (errorEl) errorEl.classList.add("hidden");
     }
 
     function idle() {
@@ -62,23 +65,31 @@ window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd
 
     function value(id) {
       var el = document.getElementById(id);
-      return el ? String(el.value || '').trim() : '';
+      return el ? String(el.value || "").trim() : "";
     }
 
     function collectTeamMembers() {
       var members = [];
-      form.querySelectorAll('[data-chip]').forEach(function (chip) {
-        var mail = String(chip.dataset.chip || chip.textContent || '').replace(/×\s*$/, '').trim();
+      form.querySelectorAll("[data-chip]").forEach(function (chip) {
+        var mail = String(chip.dataset.chip || chip.textContent || "")
+          .replace(/×\s*$/, "")
+          .trim();
         if (mail && members.indexOf(mail) === -1) members.push(mail);
       });
 
-      var typed = emailInput ? String(emailInput.value || '').trim().replace(/,$/, '') : '';
+      var typed = emailInput
+        ? String(emailInput.value || "")
+            .trim()
+            .replace(/,$/, "")
+        : "";
       if (typed) {
-        if (!EMAIL.test(typed)) throw new Error('“' + typed + '” is not a valid email address.');
+        if (!EMAIL.test(typed))
+          throw new Error("“" + typed + "” is not a valid email address.");
         if (members.indexOf(typed) === -1) members.push(typed);
       }
 
-      if (members.length > 10) throw new Error('Maximum of 10 members per team.');
+      if (members.length > 10)
+        throw new Error("Maximum of 10 members per team.");
       return members;
     }
 
@@ -89,74 +100,85 @@ window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd
       clearError();
 
       if (!endpoint) {
-        showError('Registration is not open yet. Please contact the organizers.');
+        showError(
+          "Registration is not open yet. Please contact the organizers.",
+        );
         return;
       }
 
       var payload;
       try {
         payload = {
-          event: 'jam26',
-          fullName: value('fullName'),
-          universityId: value('universityId'),
-          universityEmail: value('universityEmail'),
-          phoneNumber: value('phoneNumber'),
-          major: value('major'),
-          teamName: value('teamName'),
-          teamMembers: collectTeamMembers().join(', '),
-          website: value('website')
+          event: "jam26",
+          fullName: value("fullName"),
+          universityId: value("universityId"),
+          universityEmail: value("universityEmail"),
+          phoneNumber: value("phoneNumber"),
+          major: value("major"),
+          teamName: value("teamName"),
+          teamMembers: collectTeamMembers().join(", "),
+          website: value("website"),
         };
       } catch (err) {
-        showError(err && err.message ? err.message : 'Please check the team-member emails.');
+        showError(
+          err && err.message
+            ? err.message
+            : "Please check the team-member emails.",
+        );
         return;
       }
 
       var required = [
-        ['fullName', 'your full name'],
-        ['universityId', 'your university ID'],
-        ['universityEmail', 'your university email'],
-        ['phoneNumber', 'your phone number'],
-        ['major', 'your major'],
-        ['teamName', 'your team name']
+        ["fullName", "your full name"],
+        ["universityId", "your university ID"],
+        ["universityEmail", "your university email"],
+        ["phoneNumber", "your phone number"],
+        ["major", "your major"],
+        ["teamName", "your team name"],
       ];
       for (var i = 0; i < required.length; i += 1) {
         if (!payload[required[i][0]]) {
-          showError('Please fill in ' + required[i][1] + '.');
+          showError("Please fill in " + required[i][1] + ".");
           return;
         }
       }
-      if (!EMAIL.test(payload.universityEmail) || !/@psu\.edu\.sa$/i.test(payload.universityEmail)) {
-        showError('Use your university email ending in @psu.edu.sa.');
+      if (
+        !EMAIL.test(payload.universityEmail) ||
+        !/@psu\.edu\.sa$/i.test(payload.universityEmail)
+      ) {
+        showError("Use your university email ending in @psu.edu.sa.");
         return;
       }
       if (!/^\d{9}$/.test(payload.universityId)) {
-        showError('Your university ID must be exactly 9 digits.');
+        showError("Your university ID must be exactly 9 digits.");
         return;
       }
-      if (!/^0?\d{9}$/.test(payload.phoneNumber.replace(/[\s-]/g, ''))) {
-        showError('Your phone number must be 10 digits like 0## ### #### (or 9 digits without the 0).');
+      if (!/^0?\d{9}$/.test(payload.phoneNumber.replace(/[\s-]/g, ""))) {
+        showError(
+          "Your phone number must be 10 digits like 0## ### #### (or 9 digits without the 0).",
+        );
         return;
       }
 
-      var sink = document.getElementById('jamRegistrationSink');
+      var sink = document.getElementById("jamRegistrationSink");
       if (!sink) {
-        sink = document.createElement('iframe');
-        sink.id = 'jamRegistrationSink';
-        sink.name = 'jamRegistrationSink';
-        sink.title = 'registration response';
+        sink = document.createElement("iframe");
+        sink.id = "jamRegistrationSink";
+        sink.name = "jamRegistrationSink";
+        sink.title = "registration response";
         sink.hidden = true;
         document.body.appendChild(sink);
       }
 
-      var relay = document.createElement('form');
+      var relay = document.createElement("form");
       relay.action = endpoint;
-      relay.method = 'POST';
+      relay.method = "POST";
       relay.target = sink.name;
-      relay.style.display = 'none';
+      relay.style.display = "none";
 
       Object.keys(payload).forEach(function (name) {
-        var field = document.createElement('input');
-        field.type = 'hidden';
+        var field = document.createElement("input");
+        field.type = "hidden";
         field.name = name;
         field.value = payload[name];
         relay.appendChild(field);
@@ -166,7 +188,7 @@ window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd
       busy = true;
       if (button) {
         button.disabled = true;
-        button.textContent = 'SUBMITTING...';
+        button.textContent = "SUBMITTING...";
       }
 
       var completed = false;
@@ -179,38 +201,44 @@ window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd
          * In either case we still require our private response tag before
          * accepting the message as a registration acknowledgement.
          */
-        if (message.origin !== 'null' && !GOOGLE_ORIGIN.test(message.origin)) return;
-        if (!message.data || message.data.source !== 'acm-event-registration') return;
-        if (message.data.event && message.data.event !== 'jam26') return;
+        if (message.origin !== "null" && !GOOGLE_ORIGIN.test(message.origin))
+          return;
+        if (!message.data || message.data.source !== "acm-event-registration")
+          return;
+        if (message.data.event && message.data.event !== "jam26") return;
 
         completed = true;
-        window.removeEventListener('message', receive);
+        window.removeEventListener("message", receive);
         window.clearTimeout(timer);
 
-        var serverMessage = String(message.data.message || 'Registration failed.');
-        if (serverMessage === 'OK') {
-          form.classList.add('hidden');
-          if (successEl) successEl.classList.remove('hidden');
+        var serverMessage = String(
+          message.data.message || "Registration failed.",
+        );
+        if (serverMessage === "OK") {
+          form.classList.add("hidden");
+          if (successEl) successEl.classList.remove("hidden");
           busy = false;
           return;
         }
 
-        showError(serverMessage.replace(/^Error:\s*/i, ''));
+        showError(serverMessage.replace(/^Error:\s*/i, ""));
         idle();
       }
 
-      window.addEventListener('message', receive);
+      window.addEventListener("message", receive);
       relay.submit();
       relay.remove();
 
       timer = window.setTimeout(function () {
         if (completed) return;
-        window.removeEventListener('message', receive);
+        window.removeEventListener("message", receive);
         idle();
-        showError('The registration service did not respond. Your submission may still have been received; please contact the organizers before submitting again.');
+        showError(
+          "The registration service did not respond. Your submission may still have been received; please contact the organizers before submitting again.",
+        );
       }, 30000);
     }
 
-    form.addEventListener('submit', submitReliably, true);
+    form.addEventListener("submit", submitReliably, true);
   });
-}());
+})();
