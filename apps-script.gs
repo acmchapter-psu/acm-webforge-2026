@@ -4,14 +4,14 @@
  * One deployed Apps Script web app accepts registrations from both event sites
  * and writes them into the single ACM PSU Club Records workbook.
  *
- *   event=jam26 -> jam26
+ *   event=jam26 -> WebForge26
  *   event=ctf30 -> ctf30
  *
  * FAQ messages use the spreadsheet this script is attached to.
  */
 
-var REGISTRATION_SPREADSHEET_ID = '1WtNGmVYO8hk_w3I37n1T6wS9_z_dTyTPW4fTHZ4lW3s';
-var JAM_SHEET = 'jam26';
+var REGISTRATION_SPREADSHEET_ID = '1wXP3WvqcjnDEOe_sDSGXR-Z6HKvjnufarA4r-CovVEU';
+var JAM_SHEET = 'WebForge26';
 var CTF_SHEET = 'ctf30';
 var MESSAGES_SHEET = 'Messages';
 var ORGANIZER_EMAIL = 'shoug.alomran@shoug-tech.com';
