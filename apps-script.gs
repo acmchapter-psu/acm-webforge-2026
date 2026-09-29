@@ -9,7 +9,7 @@
  * Canonical club tabs (People, Members, ...) can never be written from here.
  */
 var REGISTRATION_SPREADSHEET_ID = '1wXP3WvqcjnDEOe_sDSGXR-Z6HKvjnufarA4r-CovVEU';
-var REGISTRATION_VERSION = '2026-09-29.2';
+var REGISTRATION_VERSION = '2026-09-29.3';
 var REGISTRATION_SOURCE = 'acm-event-registration';
 
 /**
@@ -332,7 +332,8 @@ function writeRegistration_(event, sheet, headers, values, uniqueChecks, identit
   if (duplicate) return reply('Error: ' + duplicate);
 
   // Rate limit last, so a rejected attempt never locks out an immediate retry.
-  if (identity && !allowRegistrationRequest(registrationKey_(sheet.getName()), identity, REGISTRATION_RATE_SECONDS)) {
+  var rateScope = registrationKey_(sheet.getName());
+  if (identity && !allowRegistrationRequest(rateScope, identity, REGISTRATION_RATE_SECONDS)) {
     return reply('Error: please wait before submitting again');
   }
 
@@ -349,8 +350,15 @@ function writeRegistration_(event, sheet, headers, values, uniqueChecks, identit
 
   // appendRow only ever adds a new last row. No existing registration is read
   // back to the caller, cleared, or overwritten anywhere in this handler.
-  sheet.appendRow(row);
-  SpreadsheetApp.flush();
+  try {
+    sheet.appendRow(row);
+    SpreadsheetApp.flush();
+  } catch (err) {
+    // Nothing was saved, so let the person retry straight away.
+    if (identity) releaseRegistrationRequest(rateScope, identity);
+    console.error('WRITE FAILED in "' + sheet.getName() + '": ' + (err && err.message ? err.message : err));
+    return reply('Error: registration could not be saved. Please contact the organizers.');
+  }
   return reply('OK');
 }
 
@@ -467,12 +475,22 @@ function safeRegistrationCell(value) {
  * address or university ID is stored in the cache in readable form.
  */
 function allowRegistrationRequest(scope, identity, seconds) {
-  var digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, scope + '|' + identity);
-  var key = Utilities.base64EncodeWebSafe(digest).slice(0, 80);
+  var key = registrationRateKey_(scope, identity);
   var cache = CacheService.getScriptCache();
   if (cache.get(key)) return false;
   cache.put(key, '1', seconds);
   return true;
+}
+
+
+function releaseRegistrationRequest(scope, identity) {
+  CacheService.getScriptCache().remove(registrationRateKey_(scope, identity));
+}
+
+
+function registrationRateKey_(scope, identity) {
+  var digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, scope + '|' + identity);
+  return Utilities.base64EncodeWebSafe(digest).slice(0, 80);
 }
 
 
