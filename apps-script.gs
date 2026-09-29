@@ -9,7 +9,7 @@
  * Canonical club tabs (People, Members, ...) can never be written from here.
  */
 var REGISTRATION_SPREADSHEET_ID = '1wXP3WvqcjnDEOe_sDSGXR-Z6HKvjnufarA4r-CovVEU';
-var REGISTRATION_VERSION = '2026-09-29.3';
+var REGISTRATION_VERSION = '2026-09-29.4';
 var REGISTRATION_SOURCE = 'acm-event-registration';
 
 /**
@@ -254,7 +254,7 @@ function handleConfiguredRegistration_(event, config, sheet, headers, form) {
   });
 
   var identity = (config.rateFields || []).map(function (f) { return value(f).toLowerCase(); }).join('|');
-  return writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, reply);
+  return writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, String(form.requestId || ''), reply);
 }
 
 
@@ -322,12 +322,12 @@ function handleDynamicRegistration_(event, sheet, headers, form) {
   var identity = emailValues.length
     ? emailValues.join('|')
     : Object.keys(values).sort().map(function (h) { return values[h].toLowerCase(); }).join('|');
-  return writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, reply);
+  return writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, String(form.requestId || ''), reply);
 }
 
 
 /** Shared tail: duplicate check, rate limit, then one appended row. */
-function writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, reply) {
+function writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, requestId, reply) {
   var duplicate = findExistingRegistration(sheet, headers, uniqueChecks);
   if (duplicate) return reply('Error: ' + duplicate);
 
@@ -359,7 +359,92 @@ function writeRegistration_(event, sheet, headers, values, uniqueChecks, identit
     console.error('WRITE FAILED in "' + sheet.getName() + '": ' + (err && err.message ? err.message : err));
     return reply('Error: registration could not be saved. Please contact the organizers.');
   }
+
+  // The row is saved. Copying it to the platform's records backup happens
+  // after, so a failed copy can never turn a saved registration into an error
+  // the participant sees; the admin import recovers anything it missed.
+  try {
+    mirrorRegistrationToPlatform_(event, sheet.getName(), headers, row, requestId);
+  } catch (mirrorError) {
+    console.error('MIRROR FAILED for "' + sheet.getName() + '": ' + (mirrorError && mirrorError.message ? mirrorError.message : mirrorError));
+  }
   return reply('OK');
+}
+
+
+/**
+ * Best-effort second copy into the ACM PSU platform (Admin > Records Backup).
+ *
+ * Configured through Script Properties rather than constants, because the
+ * token is a credential and this file is public:
+ *
+ *   PLATFORM_INTAKE_URL     the event-registration-intake Edge Function URL
+ *   PLATFORM_INTAKE_TOKEN   the value of its EVENT_REGISTRATION_TOKEN secret
+ *
+ * With either missing the copy is skipped, so registration keeps working
+ * before the platform side is configured. The platform finds the event by its
+ * key or by its worksheet name, so events whose form posts the tab name work
+ * too.
+ */
+function mirrorRegistrationToPlatform_(event, sheetName, headers, row, requestId) {
+  var properties = PropertiesService.getScriptProperties();
+  var url = String(properties.getProperty('PLATFORM_INTAKE_URL') || '').trim();
+  var token = String(properties.getProperty('PLATFORM_INTAKE_TOKEN') || '').trim();
+  if (!url || !token) {
+    console.error('MIRROR SKIPPED: set PLATFORM_INTAKE_URL and PLATFORM_INTAKE_TOKEN in Script Properties');
+    return;
+  }
+
+  var fields = {};
+  for (var i = 0; i < headers.length; i += 1) {
+    var value = row[i];
+    fields[String(headers[i])] = value instanceof Date
+      ? value.toISOString()
+      : String(value === undefined || value === null ? '' : value);
+  }
+
+  var response = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'x-registration-token': token },
+    // A non-2xx reply must not throw: the registration is already recorded.
+    muteHttpExceptions: true,
+    payload: JSON.stringify({
+      event: String(event),
+      sheet: String(sheetName),
+      requestId: String(requestId || ''),
+      fields: fields
+    })
+  });
+  var status = response.getResponseCode();
+  if (status < 200 || status >= 300) {
+    console.error('MIRROR REJECTED (' + status + ') for "' + sheetName + '": ' + response.getContentText());
+  }
+}
+
+
+/**
+ * Run from the editor to send one clearly-marked test call to the platform
+ * and log the reply. It posts an unknown event, so nothing is stored: a
+ * 400 "Unknown event" means the URL and token are right; 401 means the token
+ * does not match EVENT_REGISTRATION_TOKEN.
+ */
+function debugPlatformMirror() {
+  var properties = PropertiesService.getScriptProperties();
+  var url = String(properties.getProperty('PLATFORM_INTAKE_URL') || '').trim();
+  var token = String(properties.getProperty('PLATFORM_INTAKE_TOKEN') || '').trim();
+  if (!url || !token) {
+    console.log('Missing Script Properties: ' + (!url ? 'PLATFORM_INTAKE_URL ' : '') + (!token ? 'PLATFORM_INTAKE_TOKEN' : ''));
+    return;
+  }
+  var response = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'x-registration-token': token },
+    muteHttpExceptions: true,
+    payload: JSON.stringify({ event: '__connection_check__', fields: {} })
+  });
+  console.log(response.getResponseCode() + ' ' + response.getContentText());
 }
 
 
