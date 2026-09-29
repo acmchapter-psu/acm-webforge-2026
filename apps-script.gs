@@ -9,7 +9,7 @@
  * Canonical club tabs (People, Members, ...) can never be written from here.
  */
 var REGISTRATION_SPREADSHEET_ID = '1wXP3WvqcjnDEOe_sDSGXR-Z6HKvjnufarA4r-CovVEU';
-var REGISTRATION_VERSION = '2026-09-29.4';
+var REGISTRATION_VERSION = '2026-09-29.6';
 var REGISTRATION_SOURCE = 'acm-event-registration';
 
 /**
@@ -131,6 +131,11 @@ var REGISTRATION_LOCK_MS = 15000;
 var REGISTRATION_RATE_SECONDS = 300;
 var DEFAULT_FIELD_LIMIT = 1500;
 var REGISTRATION_EVENT_PATTERN = /^[A-Za-z0-9][A-Za-z0-9 _.\-]{0,79}$/;
+/** Applies to every event: any "University Email" column and any "University/Student ID" column. */
+var REGISTRATION_EMAIL_PATTERN = /@psu\.edu\.sa$/i;
+var REGISTRATION_ID_PATTERN = /^\d{9}$/;
+/** 05######## (10 digits) or 5######## (9 digits); spaces and dashes are ignored. */
+var REGISTRATION_PHONE_PATTERN = /^0?\d{9}$/;
 
 
 /**
@@ -328,6 +333,9 @@ function handleDynamicRegistration_(event, sheet, headers, form) {
 
 /** Shared tail: duplicate check, rate limit, then one appended row. */
 function writeRegistration_(event, sheet, headers, values, uniqueChecks, identity, requestId, reply) {
+  var formatError = registrationFormatError_(values);
+  if (formatError) return reply('Error: ' + formatError);
+
   var duplicate = findExistingRegistration(sheet, headers, uniqueChecks);
   if (duplicate) return reply('Error: ' + duplicate);
 
@@ -445,6 +453,27 @@ function debugPlatformMirror() {
     payload: JSON.stringify({ event: '__connection_check__', fields: {} })
   });
   console.log(response.getResponseCode() + ' ' + response.getContentText());
+}
+
+
+/** PSU-only emails, 9-digit IDs and 9/10-digit phones, matched by column name so new events get it too. */
+function registrationFormatError_(values) {
+  var headers = Object.keys(values);
+  for (var i = 0; i < headers.length; i += 1) {
+    var key = registrationKey_(headers[i]);
+    var text = values[headers[i]];
+    if (!text) continue;
+    if (key.indexOf('universityemail') !== -1 && !REGISTRATION_EMAIL_PATTERN.test(text)) {
+      return headers[i] + ' must be a @psu.edu.sa email';
+    }
+    if (/(university|student)id$/.test(key) && !REGISTRATION_ID_PATTERN.test(text)) {
+      return headers[i] + ' must be exactly 9 digits';
+    }
+    if (key.indexOf('phone') !== -1 && !REGISTRATION_PHONE_PATTERN.test(text.replace(/[\s-]/g, ''))) {
+      return headers[i] + ' must be 10 digits like 0## ### #### (or 9 digits without the 0)';
+    }
+  }
+  return '';
 }
 
 

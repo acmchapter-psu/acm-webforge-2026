@@ -125,8 +125,16 @@ window.JAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd
           return;
         }
       }
-      if (!EMAIL.test(payload.universityEmail)) {
-        showError('That university email does not look valid.');
+      if (!EMAIL.test(payload.universityEmail) || !/@psu\.edu\.sa$/i.test(payload.universityEmail)) {
+        showError('Use your university email ending in @psu.edu.sa.');
+        return;
+      }
+      if (!/^\d{9}$/.test(payload.universityId)) {
+        showError('Your university ID must be exactly 9 digits.');
+        return;
+      }
+      if (!/^0?\d{9}$/.test(payload.phoneNumber.replace(/[\s-]/g, ''))) {
+        showError('Your phone number must be 10 digits like 0## ### #### (or 9 digits without the 0).');
         return;
       }
 
