@@ -88,8 +88,8 @@ window.JAM_ENDPOINT =
         if (members.indexOf(typed) === -1) members.push(typed);
       }
 
-      if (members.length > 10)
-        throw new Error("Maximum of 10 members per team.");
+      if (members.length > 3)
+        throw new Error("Maximum of 4 people per team (you plus 3 teammates).");
       return members;
     }
 

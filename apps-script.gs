@@ -66,7 +66,7 @@ var REGISTRATION_EVENTS = {
     ],
     emailFields: ["universityEmail"],
     // Comma-separated email lists, with the maximum number of entries.
-    emailListFields: { teamMembers: 10 },
+    emailListFields: { teamMembers: 3 },
     optionalGroup: [],
     enums: {},
     limits: {

@@ -352,8 +352,7 @@
                   />
                 </div>
                 <p class="font-mono text-xs leading-relaxed text-gray-500">
-                  Press Enter or comma after each address. Leave empty if you
-                  are registering alone.
+                  Press Enter or comma after each address. Add up to 3 teammates (4 people max), or leave empty if you are working alone.
                 </p>
               </div>
 
@@ -446,7 +445,7 @@
         class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-sm font-bold"
       >
         <div class="flex items-center gap-2">
-          <span class="inline-block w-4 h-4 bg-[#111111]"></span>
+          <img src="assets/logo.svg" alt="" class="w-7 h-7 shrink-0" width="28" height="28" />
           <span class="text-lg tracking-tight">WebForge 2026</span>
         </div>
         <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 uppercase">
@@ -565,8 +564,8 @@
             fail(mail + " has already been added.");
             return false;
           }
-          if (emails.length >= 10) {
-            fail("Maximum of 10 members per team.");
+          if (emails.length >= 3) {
+            fail("Maximum of 4 people per team (you plus 3 teammates).");
             return false;
           }
           emails.push(mail);

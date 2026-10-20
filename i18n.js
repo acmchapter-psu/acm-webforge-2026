@@ -59,21 +59,24 @@
       "حدث لهندسة الويب بمساعدة الذكاء الاصطناعي. كل فريق يستلم نفس وصف التطبيق، ثم يخطّط له، يصمّمه، يبنيه، ينشره، ويعرضه.",
     "## Format": "## الصيغة",
     "Brief: One shared application challenge": "الوصف: تحدي تطبيق واحد مشترك",
-    "Preparation: 3 workshop days": "التحضير: 3 أيام ورش",
+    "Preparation: 3 workshop days":
+      "التحضير: 3 أيام ورش",
+    "Teams: Work alone or in a group of up to 4":
+      "الفرق: اشتغل لحالك أو مع فريق حتى 4 أشخاص",
     "Laptop: Bring your own (required)": "اللابتوب: أحضر جهازك الخاص (إلزامي)",
-    "Workshop location: E231 (hybrid: in person or online)":
-      "مكان الورش: E231 (حضوري أو عن بُعد)",
+    "Workshop location: Online":
+      "مكان الورش: عن بُعد (أونلاين)",
     "Competition format: In person only":
       "المسابقة: حضوري فقط",
     "Time: 4:00 PM - 6:00 PM": "الوقت: 4:00 م - 6:00 م",
-    "25 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
-      "25 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
-    "26 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
-      "26 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
-    "28 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
-      "28 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
-    "Workshops: 25, 26 & 28 October 2026 in E231 (hybrid) // Competition: 31 October 2026, in person only // Competition location: TBD":
-      "الورش: 25 و26 و28 أكتوبر 2026 في E231 (حضوري وعن بُعد) // المسابقة: 31 أكتوبر 2026، حضوري فقط // مكان المسابقة: يُعلن لاحقًا",
+    "25 October 2026 // 4:00 PM - 6:00 PM // ONLINE":
+      "25 أكتوبر 2026 // 4:00 م - 6:00 م // عن بُعد",
+    "26 October 2026 // 4:00 PM - 6:00 PM // ONLINE":
+      "26 أكتوبر 2026 // 4:00 م - 6:00 م // عن بُعد",
+    "28 October 2026 // 4:00 PM - 6:00 PM // ONLINE":
+      "28 أكتوبر 2026 // 4:00 م - 6:00 م // عن بُعد",
+    "Workshops: 25, 26 & 28 October 2026 online // Competition: 31 October 2026, in person only // Competition location: TBD":
+      "الورش: 25 و26 و28 أكتوبر 2026 عن بُعد // المسابقة: 31 أكتوبر 2026، حضوري فقط // مكان المسابقة: يُعلن لاحقًا",
     "Duration: TBD": "المدة: يُعلن لاحقًا",
     "## Toolchain": "## الأدوات",
     The: "",
@@ -358,8 +361,8 @@
     "> Are there preparation workshops?": "> فيه ورش تحضيرية؟",
     "WebForge 2026 includes three workshop days designed to prepare participants for the development workflow they will use during the competition.":
       "WebForge 2026 يتضمن ثلاثة أيام ورش مصمّمة لتجهيز المشاركين لسير العمل اللي بيستخدمونه في المسابقة.",
-    "WebForge 2026 includes three workshop days on 25, 26, and 28 October 2026, all developed and taught by Shoug Alomran. Workshops are hybrid, so you can attend in person in E231 or online. Competition day is 31 October 2026 and is in person only.":
-      "يتضمن WebForge 2026 ثلاثة أيام ورش في 25 و26 و28 أكتوبر 2026، وجميعها من إعداد وتقديم شوق العمران. الورش بنظام هجين، تقدر تحضرها حضوريًا في E231 أو عن بُعد. ويوم المسابقة هو 31 أكتوبر 2026 وحضوري فقط.",
+    "WebForge 2026 includes three workshop days on 25, 26, and 28 October 2026, all developed and taught by Shoug Alomran. All workshops are held online. Competition day is 31 October 2026 and is in person only.":
+      "يتضمن WebForge 2026 ثلاثة أيام ورش في 25 و26 و28 أكتوبر 2026، وجميعها من إعداد وتقديم شوق العمران. وجميع الورش تُقام عن بُعد. ويوم المسابقة هو 31 أكتوبر 2026 وحضوري فقط.",
     "> What will the workshops teach?": "> وش بتعلّم الورش؟",
     "Day 01 covers planning and the development workflow. Day 02 covers full-stack development and debugging. Day 03 covers deployment, domains, search discovery, and performance. Together they walk through the same workflow used on competition day.":
       "اليوم 01 يغطي التخطيط وسير عمل التطوير. اليوم 02 يغطي التطوير المتكامل وتصحيح الأخطاء. اليوم 03 يغطي النشر والنطاقات ومحركات البحث والأداء. وكلها مع بعض تمشي على نفس سير العمل المستخدم يوم المسابقة.",
@@ -746,10 +749,8 @@
     "All workshops are developed and taught by Shoug Alomran.":
       "جميع الورش من إعداد وتقديم شوق العمران.",
     "INSTRUCTOR // SHOUG ALOMRAN": "المدربة // شوق العمران",
-    "LOCATION // E231":
-      "المكان // E231",
-    "FORMAT // HYBRID (IN PERSON OR ONLINE)":
-      "الصيغة // حضوري أو عن بُعد",
+    "LOCATION // ONLINE":
+      "المكان // عن بُعد",
     "TIME // 4:00 PM - 6:00 PM": "الوقت // 4:00 م - 6:00 م",
     "initializing training sequence...": "بدء تسلسل التدريب...",
     "3 modules detected": "تم رصد 3 وحدات",
@@ -799,8 +800,8 @@
       "مرحلة التحضير الأخيرة. خُذ التطبيق من localhost إلى رابط إنتاج حقيقي، اربطه بنطاق، خلّه قابلًا للاكتشاف، وقِس أداءه.",
     "MODULE_FOCUS:": "تركيز_الوحدة:",
     "Deploy → Domain → Index → Measure.": "انشر ← اربط النطاق ← فهرِس ← قِس.",
-    "// Sessions run 4:00 PM - 6:00 PM in E231. Hybrid: join in person or online.":
-      "// الجلسات من 4:00 م إلى 6:00 م في E231. حضوري أو عن بُعد، اختر اللي يناسبك.",
+    "// Sessions run online, 4:00 PM - 6:00 PM.":
+      "// الجلسات عن بُعد، من 4:00 م إلى 6:00 م.",
     "Deployment Readiness Tracker": "متتبّع الجاهزية للنشر",
     "Core Features": "الميزات الأساسية",
     PASS: "ناجح",
@@ -1079,8 +1080,8 @@
     "e.g. Software Engineering": "مثال: هندسة البرمجيات",
     "06 // Team Name": "06 // اسم الفريق",
     "07 // Team Members (Emails)": "07 // أعضاء الفريق (الإيميلات)",
-    "Press Enter or comma after each address. Leave empty if you are registering alone.":
-      "اضغط Enter أو فاصلة بعد كل عنوان. اتركه فاضي إذا كنت مسجّل لحالك.",
+    "Press Enter or comma after each address. Add up to 3 teammates (4 people max), or leave empty if you are working alone.":
+      "اضغط Enter أو فاصلة بعد كل عنوان. أضف حتى 3 أعضاء (4 أشخاص كحد أقصى)، أو اتركه فاضي إذا بتشتغل لحالك.",
 
     /* ---- ask-an-organizer form (faq.html) ---- */
     "Your Name": "اسمك",
@@ -1144,8 +1145,8 @@
       "يمكن لطلاب الجامعات الذين يكملون التسجيل المشاركة. سيؤكد المنظمون تفاصيل الأهلية النهائية قبل الحدث.",
     "Yes. You may register alone. The team-formation process can also help individual participants join or create a team.":
       "نعم. يمكنك التسجيل بشكل فردي، ويمكن لعملية تكوين الفرق مساعدتك على الانضمام إلى فريق أو إنشاء فريق.",
-    "A team may include the primary registrant and up to ten additional member email addresses. Only registered team members may collaborate on the competition solution.":
-      "يمكن أن يضم الفريق المسجل الأساسي وما يصل إلى عشرة أعضاء إضافيين. يحق لأعضاء الفريق المسجلين فقط التعاون في حل المسابقة.",
+    "You can work alone or in a team of up to 4 people: the primary registrant plus up to three additional member email addresses. Only registered team members may collaborate on the competition solution.":
+      "تقدر تشتغل لحالك أو مع فريق حتى 4 أشخاص: المسجّل الأساسي وما يصل إلى ثلاثة أعضاء إضافيين. يحق لأعضاء الفريق المسجلين فقط التعاون في حل المسابقة.",
     "Request team changes through the organizer contact form before competition day. Changes are valid only after the organizers confirm the updated roster.":
       "اطلب تغييرات الفريق عبر نموذج التواصل مع المنظمين قبل يوم المسابقة. لا تصبح التغييرات معتمدة إلا بعد تأكيد المنظمين للقائمة المحدّثة.",
     "Workshop attendance is strongly recommended because the competition assumes familiarity with the full workflow. Participants remain responsible for learning the published presentation material and completing the handout checklists before competition day.":
@@ -1187,8 +1188,8 @@
       "31 أكتوبر 2026 // حضوري فقط // الوقت والموقع سيُعلنان لاحقًا",
     "PLAN → BUILD → DEBUG → DEPLOY → ADAPT → PRESENT":
       "خطّط ← ابنِ ← صحّح ← انشر ← تكيّف ← اعرض",
-    "You may register alone. The team-formation process can also help individual participants join or create a team.":
-      "يمكنك التسجيل بشكل فردي، ويمكن لعملية تكوين الفرق مساعدتك على الانضمام إلى فريق أو إنشاء فريق.",
+    "You can work alone or in a team of up to 4 people. The team-formation process can also help individual participants join or create a team.":
+      "تقدر تشتغل لحالك أو مع فريق حتى 4 أشخاص، ويمكن لعملية تكوين الفرق مساعدتك على الانضمام إلى فريق أو إنشاء فريق.",
     "Website":
       "الموقع الإلكتروني",
     "Cancel registration and return home":
@@ -1285,8 +1286,8 @@
       "حاول التسجيل مرة ثانية",
     "Registration failed.":
       "تعذّر التسجيل.",
-    "Maximum of 10 members per team.":
-      "الحد الأقصى 10 أعضاء لكل فريق.",
+    "Maximum of 4 people per team (you plus 3 teammates).":
+      "الحد الأقصى 4 أشخاص لكل فريق (أنت و3 أعضاء).",
     "Registration is not open yet. Please contact the organizers.":
       "التسجيل لم يُفتح بعد. الرجاء التواصل مع المنظمين.",
     "Registration is not open yet. Please check back soon.":
