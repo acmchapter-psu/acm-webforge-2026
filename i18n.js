@@ -66,14 +66,14 @@
     "Competition format: In person only":
       "المسابقة: حضوري فقط",
     "Time: 4:00 PM - 6:00 PM": "الوقت: 4:00 م - 6:00 م",
-    "11 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
-      "11 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
-    "12 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
-      "12 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
-    "14 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
-      "14 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
-    "Workshops: 11, 12 & 14 October 2026 in E231 (hybrid) // Competition: 17 October 2026, in person only // Competition location: TBD":
-      "الورش: 11 و12 و14 أكتوبر 2026 في E231 (حضوري وعن بُعد) // المسابقة: 17 أكتوبر 2026، حضوري فقط // مكان المسابقة: يُعلن لاحقًا",
+    "25 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
+      "25 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
+    "26 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
+      "26 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
+    "28 October 2026 // 4:00 PM - 6:00 PM // E231 // HYBRID":
+      "28 أكتوبر 2026 // 4:00 م - 6:00 م // E231 // حضوري وعن بُعد",
+    "Workshops: 25, 26 & 28 October 2026 in E231 (hybrid) // Competition: 31 October 2026, in person only // Competition location: TBD":
+      "الورش: 25 و26 و28 أكتوبر 2026 في E231 (حضوري وعن بُعد) // المسابقة: 31 أكتوبر 2026، حضوري فقط // مكان المسابقة: يُعلن لاحقًا",
     "Duration: TBD": "المدة: يُعلن لاحقًا",
     "## Toolchain": "## الأدوات",
     The: "",
@@ -90,10 +90,10 @@
     "Version with GitHub, deploy to Vercel, configure the domain in Cloudflare, then measure with PageSpeed Insights.":
       "أدر الإصدارات عبر GitHub، انشر على Vercel، اضبط النطاق في Cloudflare، ثم قِس الأداء بـ PageSpeed Insights.",
     "Adapt & Present": "تكيّف واعرض",
-    "11 October 2026": "11 أكتوبر 2026",
-    "12 October 2026": "12 أكتوبر 2026",
-    "14 October 2026": "14 أكتوبر 2026",
-    "17 October 2026": "17 أكتوبر 2026",
+    "25 October 2026": "25 أكتوبر 2026",
+    "26 October 2026": "26 أكتوبر 2026",
+    "28 October 2026": "28 أكتوبر 2026",
+    "31 October 2026": "31 أكتوبر 2026",
     "Respond to the unexpected change request, then demonstrate and explain what you built.":
       "استجب لطلب التغيير المفاجئ، ثم اعرض واشرح اللي بنيته.",
     "/WORKSHOPS": "/الورش",
@@ -106,9 +106,9 @@
     "Day 01": "اليوم 01",
     "Day 02": "اليوم 02",
     "Day 03": "اليوم 03",
-    "Day 01 // 11 October 2026": "اليوم 01 // 11 أكتوبر 2026",
-    "Day 02 // 12 October 2026": "اليوم 02 // 12 أكتوبر 2026",
-    "Day 03 // 14 October 2026": "اليوم 03 // 14 أكتوبر 2026",
+    "Day 01 // 25 October 2026": "اليوم 01 // 25 أكتوبر 2026",
+    "Day 02 // 26 October 2026": "اليوم 02 // 26 أكتوبر 2026",
+    "Day 03 // 28 October 2026": "اليوم 03 // 28 أكتوبر 2026",
     "Turn requirements into a plan: understand the brief, map the system in Excalidraw, design the UI in Variant.":
       "حوّل المتطلبات إلى خطة: افهم الوصف، ارسم النظام في Excalidraw، وصمّم الواجهة في Variant.",
     "Explore Day 01": "استكشف اليوم 01",
@@ -124,13 +124,13 @@
     "Every team receives the same application brief on competition day. It defines the target user, the core functionality, the required features, the technical requirements, and the final deliverables. How you build it is up to your team.":
       "كل فريق يستلم نفس وصف التطبيق يوم المسابقة. الوصف يحدد المستخدم المستهدف، الوظائف الأساسية، الميزات المطلوبة، المتطلبات التقنية، والمخرجات النهائية. أما طريقة البناء فهي قرار فريقك.",
     "How Competition Day Works": "كيف يشتغل يوم المسابقة",
-    "Workshops: 11, 12 & 14 October 2026 // Competition: 17 October 2026 // Venue: TBD":
-      "الورش: 11 و12 و14 أكتوبر 2026 // المسابقة: 17 أكتوبر 2026 // المكان: يُعلن لاحقًا",
+    "Workshops: 25, 26 & 28 October 2026 // Competition: 31 October 2026 // Venue: TBD":
+      "الورش: 25 و26 و28 أكتوبر 2026 // المسابقة: 31 أكتوبر 2026 // المكان: يُعلن لاحقًا",
     "Register Now": "سجّل الآن",
     "LET'S GO": "يلا نبدأ",
     /* ---- competition.html ---- */
     "/COMPETITION": "/المسابقة",
-    "/COMPETITION // 17 OCTOBER 2026": "/المسابقة // 17 أكتوبر 2026",
+    "/COMPETITION // 31 OCTOBER 2026": "/المسابقة // 31 أكتوبر 2026",
     "No Tutorial": "بدون شرح",
     "This Time.": "هالمرة.",
     "You Build It.": "أنت تبنيه.",
@@ -358,8 +358,8 @@
     "> Are there preparation workshops?": "> فيه ورش تحضيرية؟",
     "WebForge 2026 includes three workshop days designed to prepare participants for the development workflow they will use during the competition.":
       "WebForge 2026 يتضمن ثلاثة أيام ورش مصمّمة لتجهيز المشاركين لسير العمل اللي بيستخدمونه في المسابقة.",
-    "WebForge 2026 includes three workshop days on 11, 12, and 14 October 2026, all developed and taught by Shoug Alomran. Workshops are hybrid, so you can attend in person in E231 or online. Competition day is 17 October 2026 and is in person only.":
-      "يتضمن WebForge 2026 ثلاثة أيام ورش في 11 و12 و14 أكتوبر 2026، وجميعها من إعداد وتقديم شوق العمران. الورش بنظام هجين، تقدر تحضرها حضوريًا في E231 أو عن بُعد. ويوم المسابقة هو 17 أكتوبر 2026 وحضوري فقط.",
+    "WebForge 2026 includes three workshop days on 25, 26, and 28 October 2026, all developed and taught by Shoug Alomran. Workshops are hybrid, so you can attend in person in E231 or online. Competition day is 31 October 2026 and is in person only.":
+      "يتضمن WebForge 2026 ثلاثة أيام ورش في 25 و26 و28 أكتوبر 2026، وجميعها من إعداد وتقديم شوق العمران. الورش بنظام هجين، تقدر تحضرها حضوريًا في E231 أو عن بُعد. ويوم المسابقة هو 31 أكتوبر 2026 وحضوري فقط.",
     "> What will the workshops teach?": "> وش بتعلّم الورش؟",
     "Day 01 covers planning and the development workflow. Day 02 covers full-stack development and debugging. Day 03 covers deployment, domains, search discovery, and performance. Together they walk through the same workflow used on competition day.":
       "اليوم 01 يغطي التخطيط وسير عمل التطوير. اليوم 02 يغطي التطوير المتكامل وتصحيح الأخطاء. اليوم 03 يغطي النشر والنطاقات ومحركات البحث والأداء. وكلها مع بعض تمشي على نفس سير العمل المستخدم يوم المسابقة.",
@@ -683,13 +683,13 @@
     DAY_01: "اليوم_01",
     DAY_02: "اليوم_02",
     DAY_03: "اليوم_03",
-    "DAY_01 // 11 OCT": "اليوم_01 // 11 أكتوبر",
-    "DAY_02 // 12 OCT": "اليوم_02 // 12 أكتوبر",
-    "DAY_03 // 14 OCT": "اليوم_03 // 14 أكتوبر",
-    "COMPETITION // 17 OCT": "المسابقة // 17 أكتوبر",
-    "DAY_01 // 11 OCTOBER 2026": "اليوم_01 // 11 أكتوبر 2026",
-    "DAY_02 // 12 OCTOBER 2026": "اليوم_02 // 12 أكتوبر 2026",
-    "DAY_03 // 14 OCTOBER 2026": "اليوم_03 // 14 أكتوبر 2026",
+    "DAY_01 // 25 OCT": "اليوم_01 // 25 أكتوبر",
+    "DAY_02 // 26 OCT": "اليوم_02 // 26 أكتوبر",
+    "DAY_03 // 28 OCT": "اليوم_03 // 28 أكتوبر",
+    "COMPETITION // 31 OCT": "المسابقة // 31 أكتوبر",
+    "DAY_01 // 25 OCTOBER 2026": "اليوم_01 // 25 أكتوبر 2026",
+    "DAY_02 // 26 OCTOBER 2026": "اليوم_02 // 26 أكتوبر 2026",
+    "DAY_03 // 28 OCTOBER 2026": "اليوم_03 // 28 أكتوبر 2026",
     "Planning & Development Workflow": "التخطيط وسير عمل التطوير",
     INSTRUCTOR: "مدرّب",
     "VIEW WORKSHOP →": "شوف الورشة ←",
@@ -1155,8 +1155,8 @@
     "Ask the WebForge 2026 organizers": "اسأل منظمي WebForge 2026",
     open: "مفتوح",
     /* ---- added: missing strings and script-set messages ---- */
-    "/COMPETITION // 17 OCTOBER 2026 // IN PERSON ONLY // TIME & LOCATION TBD":
-      "/المسابقة // 17 أكتوبر 2026 // حضوري فقط // الوقت والموقع سيُعلنان لاحقًا",
+    "/COMPETITION // 31 OCTOBER 2026 // IN PERSON ONLY // TIME & LOCATION TBD":
+      "/المسابقة // 31 أكتوبر 2026 // حضوري فقط // الوقت والموقع سيُعلنان لاحقًا",
     "// JUDGING PROCESS":
       "// آلية التحكيم",
     "What teams should prepare":
@@ -1179,12 +1179,12 @@
       "قبل التسليم، تأكد أن المهام المطلوبة مكتملة، وأدوار الفريق واضحة، والحسابات والصلاحيات تعمل، والمواد جاهزة، والاعتماديات محلولة، ونسخة الإنتاج النهائية تم التحقق منها.",
     "The submitted version at the official deadline is the version evaluated. Judges apply the same published 100-point rubric to every team.":
       "النسخة المسلّمة عند الموعد النهائي الرسمي هي النسخة اللي تُقيَّم. ويطبّق المحكّمون نفس معايير التقييم المنشورة (100 نقطة) على كل الفرق.",
-    "Workshops: 11, 12 & 14 October 2026":
-      "الورش: 11 و12 و14 أكتوبر 2026",
-    "Competition: 17 October 2026":
-      "المسابقة: 17 أكتوبر 2026",
-    "17 October 2026 // IN PERSON ONLY // TIME & LOCATION TBD":
-      "17 أكتوبر 2026 // حضوري فقط // الوقت والموقع سيُعلنان لاحقًا",
+    "Workshops: 25, 26 & 28 October 2026":
+      "الورش: 25 و26 و28 أكتوبر 2026",
+    "Competition: 31 October 2026":
+      "المسابقة: 31 أكتوبر 2026",
+    "31 October 2026 // IN PERSON ONLY // TIME & LOCATION TBD":
+      "31 أكتوبر 2026 // حضوري فقط // الوقت والموقع سيُعلنان لاحقًا",
     "PLAN → BUILD → DEBUG → DEPLOY → ADAPT → PRESENT":
       "خطّط ← ابنِ ← صحّح ← انشر ← تكيّف ← اعرض",
     "You may register alone. The team-formation process can also help individual participants join or create a team.":
