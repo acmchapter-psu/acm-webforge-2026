@@ -68,6 +68,8 @@
       "مكان الورش: عن بُعد (أونلاين)",
     "Competition format: In person only":
       "المسابقة: حضوري فقط",
+    "Competition time: Saturday, 10:00 AM–2:00 PM":
+      "وقت المسابقة: السبت، 10:00 ص–2:00 م",
     "Time: 4:00 PM - 6:00 PM": "الوقت: 4:00 م - 6:00 م",
     "25 October 2026 // 4:00 PM - 6:00 PM // ONLINE":
       "25 أكتوبر 2026 // 4:00 م - 6:00 م // عن بُعد",
@@ -75,8 +77,8 @@
       "26 أكتوبر 2026 // 4:00 م - 6:00 م // عن بُعد",
     "28 October 2026 // 4:00 PM - 6:00 PM // ONLINE":
       "28 أكتوبر 2026 // 4:00 م - 6:00 م // عن بُعد",
-    "Workshops: 25, 26 & 28 October 2026 online // Competition: 31 October 2026, in person only // Competition location: TBD":
-      "الورش: 25 و26 و28 أكتوبر 2026 عن بُعد // المسابقة: 31 أكتوبر 2026، حضوري فقط // مكان المسابقة: يُعلن لاحقًا",
+    "Workshops: 25, 26 & 28 October 2026 online // Competition: Saturday, 31 October 2026, 10:00 AM–2:00 PM, in person only // Competition location: TBD":
+      "الورش: 25 و26 و28 أكتوبر 2026 عن بُعد // المسابقة: السبت 31 أكتوبر 2026، 10:00 ص–2:00 م، حضوري فقط // مكان المسابقة: يُعلن لاحقًا",
     "Duration: TBD": "المدة: يُعلن لاحقًا",
     "## Toolchain": "## الأدوات",
     The: "",
