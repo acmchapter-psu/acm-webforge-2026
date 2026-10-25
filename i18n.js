@@ -1348,6 +1348,18 @@
       "هذا الإيميل مسجّل مسبقًا في هذا الحدث",
     "this ID is already registered for this event":
       "هذا الرقم الجامعي مسجّل مسبقًا في هذا الحدث",
+    "Registration Closed":
+      "التسجيل مغلق",
+    "REGISTRATION CLOSED":
+      "التسجيل مغلق",
+    "> Registration for WebForge 2026 is now closed. Thank you to everyone who signed up. For questions, contact the organizers through the FAQ page.":
+      "> التسجيل في WebForge 2026 مغلق الآن. شكرًا لكل من سجّل. لأي استفسار، تواصل مع المنظمين من صفحة الأسئلة الشائعة.",
+    "CONTACT ORGANIZERS":
+      "تواصل مع المنظمين",
+    "Registration for WebForge 2026 is closed.":
+      "التسجيل في WebForge 2026 مغلق.",
+    "registration for this event is closed":
+      "التسجيل لهذا الحدث مغلق",
   };
 
   var STORAGE_KEY = "jam-lang";

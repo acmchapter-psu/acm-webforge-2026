@@ -176,6 +176,9 @@ var REGISTRATION_LOCK_MS = 15000;
 /** Seconds an identical submitter is asked to wait before retrying. */
 var REGISTRATION_RATE_SECONDS = 300;
 var DEFAULT_FIELD_LIMIT = 1500;
+// Events that no longer accept sign-ups (other events stay open).
+var REGISTRATION_CLOSED_EVENTS = { jam26: true };
+
 var REGISTRATION_EVENT_PATTERN = /^[A-Za-z0-9][A-Za-z0-9 _.\-]{0,79}$/;
 /** Applies to every event: any "University Email" column and any "University/Student ID" column. */
 var REGISTRATION_EMAIL_PATTERN = /@psu\.edu\.sa$/i;
@@ -196,6 +199,8 @@ function doPost(e) {
   };
   if (!REGISTRATION_EVENT_PATTERN.test(event))
     return reply("Error: unsupported event");
+  if (REGISTRATION_CLOSED_EVENTS[event.toLowerCase()])
+    return reply("Error: registration for this event is closed");
   if (requestId && !/^[a-f0-9]{32}$/.test(requestId))
     return registrationReply(event, "Error: invalid request identifier", "");
   if (e && e.postData && e.postData.length > 20000)

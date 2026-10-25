@@ -6,6 +6,8 @@
  */
 window.WEBFORGE_SITE_URL =
   "https://acmchapter-psu.github.io/acm-webforge-2026/";
+/* Registration is closed: the form is hidden and submissions are refused. */
+window.JAM_REGISTRATION_OPEN = false;
 window.JAM_ENDPOINT =
   "https://script.google.com/macros/s/AKfycbwaTHKGlYWYXKk8Jd3b_9LXRksiTaZiw-jNwIKgfj7UzkqnxY9yFfQrGe4BhLnKMOq5/exec";
 
@@ -98,6 +100,11 @@ window.JAM_ENDPOINT =
       event.stopImmediatePropagation();
       if (busy) return;
       clearError();
+
+      if (window.JAM_REGISTRATION_OPEN === false) {
+        showError("Registration for WebForge 2026 is closed.");
+        return;
+      }
 
       if (!endpoint) {
         showError(
