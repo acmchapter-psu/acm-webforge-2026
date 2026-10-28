@@ -1166,8 +1166,8 @@
               <div>
                 <div class="k">You'll use</div>
                 <div class="v">
-                  Vercel or GitHub Pages, Cloudflare, Search Console, Bing Webmaster,
-              PageSpeed
+                  Vercel or GitHub Pages, Cloudflare, Search Console, Bing
+                  Webmaster, PageSpeed
                 </div>
               </div>
               <div>
@@ -1705,6 +1705,38 @@
           </li>
         </ol>
 
+        <h4 class="mini-title">Find the Firebase values for Vercel</h4>
+        <p class="lead">
+          In the Firebase Console, open your project, choose
+          <b>Settings → Project settings</b>, then scroll to
+          <b>Your apps</b> and select your web app. Under
+          <b>SDK setup and configuration</b>, choose <b>Config</b>. Copy the
+          config values into the matching variables in your local
+          <code>.env</code> file, then add those same variable names and values
+          in Vercel under <b>Project → Settings → Environment Variables</b>.
+          Keep the variable names exactly as the project expects (for example,
+          <code>VITE_FIREBASE_API_KEY</code>); after changing them, redeploy so
+          the production build receives the new values.
+        </p>
+        <div class="screenshot-grid single">
+          <figure class="screenshot-card">
+            <img
+              src="assets/14-firebase-web-app-config.png"
+              alt="Firebase project settings showing the web app Config tab and Firebase configuration values"
+              loading="lazy"
+              onerror="
+                this.hidden = true;
+                this.closest('figure').classList.add('missing');
+              "
+            />
+            <figcaption>
+              Firebase Console → Project settings → Your apps → Config<code
+                >14-firebase-web-app-config.png</code
+              >
+            </figcaption>
+          </figure>
+        </div>
+
         <h4 class="mini-title">Deploy the application on Vercel</h4>
         <div class="screenshot-grid">
           <figure class="screenshot-card">
@@ -1779,9 +1811,9 @@
           <code>.github/workflows/deploy.yml</code> tells GitHub Actions when to
           build and publish the site. In this example, pushes to
           <code>main</code> trigger deployment; the workflow checks out the
-          project, builds its CSS, uploads the finished files, and deploys
-          them. Choose GitHub Actions as the Pages build source in repository
-          Settings → Pages.
+          project, builds its CSS, uploads the finished files, and deploys them.
+          Choose GitHub Actions as the Pages build source in repository Settings
+          → Pages.
         </p>
         <div class="screenshot-grid">
           <figure class="screenshot-card">
@@ -1959,9 +1991,8 @@
               "
             />
             <figcaption>
-              Choose GitHub Actions as the source and enter your custom domain<code
-                >10-github-pages-build-domain.png</code
-              >
+              Choose GitHub Actions as the source and enter your custom
+              domain<code>10-github-pages-build-domain.png</code>
             </figcaption>
           </figure>
         </div>
