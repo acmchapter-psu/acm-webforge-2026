@@ -10,7 +10,7 @@
  */
 var REGISTRATION_SPREADSHEET_ID =
   "1wXP3WvqcjnDEOe_sDSGXR-Z6HKvjnufarA4r-CovVEU";
-var REGISTRATION_VERSION = "2026-09-29.6";
+var REGISTRATION_VERSION = "2026-10-27.1";
 var REGISTRATION_SOURCE = "acm-event-registration";
 
 /**
@@ -199,7 +199,7 @@ function doPost(e) {
   };
   if (!REGISTRATION_EVENT_PATTERN.test(event))
     return reply("Error: unsupported event");
-  if (REGISTRATION_CLOSED_EVENTS[event.toLowerCase()])
+  if (Object.prototype.hasOwnProperty.call(REGISTRATION_CLOSED_EVENTS, event.toLowerCase()))
     return reply("Error: registration for this event is closed");
   if (requestId && !/^[a-f0-9]{32}$/.test(requestId))
     return registrationReply(event, "Error: invalid request identifier", "");
