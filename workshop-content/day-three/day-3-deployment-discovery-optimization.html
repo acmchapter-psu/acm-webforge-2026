@@ -1150,6 +1150,11 @@
               Google PageSpeed Insights to identify meaningful improvements
               instead of chasing a score.
             </p>
+            <p class="lead">
+              For simple static sites, you'll also see how GitHub Pages can
+              publish directly from a repository using a GitHub Actions
+              workflow.
+            </p>
 
             <div class="fact-grid">
               <div>
@@ -1161,7 +1166,8 @@
               <div>
                 <div class="k">You'll use</div>
                 <div class="v">
-                  Vercel, Cloudflare, Search Console, Bing Webmaster, PageSpeed
+                  Vercel or GitHub Pages, Cloudflare, Search Console, Bing Webmaster,
+              PageSpeed
                 </div>
               </div>
               <div>
@@ -1762,6 +1768,71 @@
             <figcaption>
               Verify the successful Vercel deployment<code
                 >03-vercel-deployment-success.png</code
+              >
+            </figcaption>
+          </figure>
+        </div>
+
+        <h4 class="mini-title">GitHub Pages can publish from a workflow</h4>
+        <p class="lead">
+          GitHub Pages works well for static sites. A workflow file such as
+          <code>.github/workflows/deploy.yml</code> tells GitHub Actions when to
+          build and publish the site. In this example, pushes to
+          <code>main</code> trigger deployment; the workflow checks out the
+          project, builds its CSS, uploads the finished files, and deploys
+          them. Choose GitHub Actions as the Pages build source in repository
+          Settings → Pages.
+        </p>
+        <div class="screenshot-grid">
+          <figure class="screenshot-card">
+            <img
+              src="assets/12-github-actions-deploy-file.png"
+              alt="Repository file tree showing deploy.yml inside .github/workflows"
+              loading="lazy"
+              onerror="
+                this.hidden = true;
+                this.closest('figure').classList.add('missing');
+              "
+            />
+            <figcaption>
+              Add the deployment workflow under .github/workflows<code
+                >12-github-actions-deploy-file.png</code
+              >
+            </figcaption>
+          </figure>
+          <figure class="screenshot-card">
+            <img
+              src="assets/13-github-pages-deploy-workflow.png"
+              alt="GitHub Actions workflow that builds and deploys a site to GitHub Pages"
+              loading="lazy"
+              onerror="
+                this.hidden = true;
+                this.closest('figure').classList.add('missing');
+              "
+            />
+            <figcaption>
+              The workflow builds the site and deploys it to GitHub Pages<code
+                >13-github-pages-deploy-workflow.png</code
+              >
+            </figcaption>
+          </figure>
+        </div>
+
+        <h4 class="mini-title">Where it fits in today's tools</h4>
+        <div class="screenshot-grid single">
+          <figure class="screenshot-card">
+            <img
+              src="assets/11-tools-github-pages.png"
+              alt="Day 3 tools card listing GitHub Pages alongside Vercel and other tools"
+              loading="lazy"
+              onerror="
+                this.hidden = true;
+                this.closest('figure').classList.add('missing');
+              "
+            />
+            <figcaption>
+              GitHub Pages added to the Day 3 tools overview<code
+                >11-tools-github-pages.png</code
               >
             </figcaption>
           </figure>
