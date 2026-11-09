@@ -149,7 +149,39 @@
     enabled: "مفعّل",
     "challenge:": "التحدي:",
     locked: "مقفل",
-    "status: awaiting competition": "الحالة: بانتظار المسابقة",
+    released: "منشور",
+    RELEASED: "منشور",
+    "status: competition complete": "الحالة: انتهت المسابقة",
+    "// 31 OCTOBER 2026": "// 31 أكتوبر 2026",
+    "The Challenges": "التحديات",
+    "Every team took on the same two challenges in four hours: build the application, then adapt it when the client changed the requirements.":
+      "كل الفرق خاضت نفس التحديين خلال أربع ساعات: بناء التطبيق، ثم تكييفه لما غيّر العميل المتطلبات.",
+    "CHALLENGE 01 // THE BRIEF": "التحدي 01 // المتطلبات",
+    "Service Booking App": "تطبيق حجز الخدمات",
+    "Build a responsive web application where customers find open appointment slots, book a time, and review their upcoming bookings, while a service provider manages the complete schedule.":
+      "ابنِ تطبيق ويب متجاوب يلاقي فيه العملاء المواعيد المتاحة، ويحجزون وقت، ويراجعون حجوزاتهم القادمة، بينما يدير مقدّم الخدمة الجدول كامل.",
+    "Every booking is tied to a signed-in customer":
+      "كل حجز مرتبط بعميل مسجّل دخوله",
+    "A booked slot stops appearing as available to others":
+      "الموعد المحجوز ما يظهر كمتاح لبقية العملاء",
+    "Customers see their own bookings; the provider sees them all":
+      "العميل يشوف حجوزاته فقط، ومقدّم الخدمة يشوفها كلها",
+    "Data persists, and the app works on mobile and desktop":
+      "البيانات محفوظة، والتطبيق يشتغل على الجوال والكمبيوتر",
+    "Download The Brief (PDF)": "حمّل المتطلبات (PDF)",
+    "CHALLENGE 02 // CHANGE REQUEST": "التحدي 02 // طلب التغيير",
+    "Recurring Unavailable Time": "وقت غير متاح متكرر",
+    "During the competition, the provider needed to block out a recurring unavailable time after bookings already existed. Teams had to detect and flag conflicts with bookings already on the schedule.":
+      "أثناء المسابقة، احتاج مقدّم الخدمة يحجب وقت غير متاح بشكل متكرر بعد ما كانت الحجوزات موجودة. وكان على الفرق اكتشاف التعارضات مع الحجوزات الموجودة في الجدول والتنبيه عليها.",
+    "The provider can define a recurring unavailable period":
+      "مقدّم الخدمة يقدر يحدد فترة غير متاحة متكررة",
+    "The new period is compared against existing bookings":
+      "الفترة الجديدة تُقارن بالحجوزات الموجودة",
+    "Conflicting bookings are clearly flagged for the provider":
+      "الحجوزات المتعارضة تظهر بوضوح لمقدّم الخدمة",
+    "Existing bookings are never silently deleted or moved":
+      "الحجوزات الموجودة ما تنحذف ولا تنتقل بدون علم",
+    "Download The Change Request (PDF)": "حمّل طلب التغيير (PDF)",
     "RECEIVE → PLAN → BUILD → ADAPT → SUBMIT → PRESENT":
       "استلم ← خطّط ← ابنِ ← تكيّف ← سلّم ← اعرض",
     "The Competition Loop": "دورة المسابقة",
@@ -173,11 +205,11 @@
       "اعرض التطبيق النهائي واشرح القرارات الهندسية لفريقك.",
     "The output is simple.": "المخرج بسيط.",
     "Build something that works.": "ابنِ شيئًا يشتغل.",
-    "Teams will receive a web application challenge on competition day. You will be responsible for interpreting the requirements and deciding how to implement the solution.":
-      "الفرق بتستلم تحدي تطبيق ويب يوم المسابقة. وأنت مسؤول عن فهم المتطلبات وتحديد طريقة تنفيذ الحل.",
+    "Teams received a web application challenge on competition day and were responsible for interpreting the requirements and deciding how to implement the solution.":
+      "استلمت الفرق تحدي تطبيق ويب يوم المسابقة، وكانت مسؤولة عن فهم المتطلبات وتحديد طريقة تنفيذ الحل.",
     "NOTE:": "ملاحظة:",
-    "Exact challenge details remain locked until competition day.":
-      "تفاصيل التحدي الدقيقة تبقى مقفلة حتى يوم المسابقة.",
+    "The full challenge briefs are now available to download on this page.":
+      "ملفات التحدي الكاملة متاحة الآن للتحميل في هذه الصفحة.",
     requirements: "المتطلبات",
     architecture: "البنية",
     implementation: "التنفيذ",

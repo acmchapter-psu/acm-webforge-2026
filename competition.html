@@ -420,12 +420,12 @@
               <span class="text-jam-orange">&gt;</span>
               <span
                 >challenge:
-                <span class="text-jam-purple animate-pulse">locked</span></span
+                <span class="text-jam-purple">released</span></span
               >
             </div>
             <div class="flex gap-4">
               <span class="text-jam-orange">&gt;</span>
-              <span>status: awaiting competition</span>
+              <span>status: competition complete</span>
             </div>
             <div class="mt-auto flex items-center">
               <span class="text-jam-purple mr-4">~</span>
@@ -696,6 +696,85 @@
       </div>
     </section>
 
+    <section
+      id="challenge"
+      class="py-24 px-6 lg:px-12 bg-[#111111] text-white scroll-mt-24"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div class="font-mono font-bold text-jam-teal mb-4">
+          // 31 OCTOBER 2026
+        </div>
+        <h2
+          class="text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[1.1] mb-6"
+        >
+          The Challenges
+        </h2>
+        <p class="text-lg md:text-xl font-medium text-gray-300 max-w-3xl mb-12">
+          Every team took on the same two challenges in four hours: build the
+          application, then adapt it when the client changed the requirements.
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <article
+            class="bg-white text-jam-text border-4 border-white p-8 flex flex-col gap-6"
+          >
+            <div class="font-mono text-sm font-bold">CHALLENGE 01 // THE BRIEF</div>
+            <h3 class="text-3xl md:text-4xl font-black uppercase">
+              Service Booking App
+            </h3>
+            <p class="text-lg font-medium">
+              Build a responsive web application where customers find open
+              appointment slots, book a time, and review their upcoming
+              bookings, while a service provider manages the complete schedule.
+            </p>
+            <ul class="font-medium space-y-3 list-disc pl-5">
+              <li>Every booking is tied to a signed-in customer</li>
+              <li>A booked slot stops appearing as available to others</li>
+              <li>Customers see their own bookings; the provider sees them all</li>
+              <li>Data persists, and the app works on mobile and desktop</li>
+            </ul>
+            <a
+              href="competition-content/service-booking-app-brief.pdf"
+              download
+              class="mt-auto bg-jam-teal text-jam-text border-4 border-jam-text px-6 py-4 font-black text-lg uppercase text-center hover:bg-jam-bg transition-all"
+            >
+              Download The Brief (PDF)
+            </a>
+          </article>
+
+          <article
+            class="bg-white text-jam-text border-4 border-white p-8 flex flex-col gap-6"
+          >
+            <div class="font-mono text-sm font-bold">
+              CHALLENGE 02 // CHANGE REQUEST
+            </div>
+            <h3 class="text-3xl md:text-4xl font-black uppercase">
+              Recurring Unavailable Time
+            </h3>
+            <p class="text-lg font-medium">
+              During the competition, the provider needed to block out a
+              recurring unavailable time after bookings already existed. Teams
+              had to detect and flag conflicts with bookings already on the
+              schedule.
+            </p>
+            <ul class="font-medium space-y-3 list-disc pl-5">
+              <li>The provider can define a recurring unavailable period</li>
+              <li>The new period is compared against existing bookings</li>
+              <li>Conflicting bookings are clearly flagged for the provider</li>
+              <li>Existing bookings are never silently deleted or moved</li>
+            </ul>
+            <a
+              href="competition-content/service-booking-app-brief-change-request.pdf"
+              download
+              class="mt-auto bg-jam-teal text-jam-text border-4 border-jam-text px-6 py-4 font-black text-lg uppercase text-center hover:bg-jam-bg transition-all"
+            >
+              Download The Change Request (PDF)
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="py-24 px-6 lg:px-12 bg-jam-bg border-y-4 border-jam-text">
       <div
         class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
@@ -713,9 +792,9 @@
 
           <div class="text-lg md:text-xl font-medium mt-4 space-y-6">
             <p>
-              Teams will receive a web application challenge on competition day.
-              You will be responsible for interpreting the requirements and
-              deciding how to implement the solution.
+              Teams received a web application challenge on competition day and
+              were responsible for interpreting the requirements and deciding
+              how to implement the solution.
             </p>
             <div
               class="bg-[#FFF9C4] border-4 border-jam-text p-6 shadow-brutal-sm font-mono text-sm relative"
@@ -725,8 +804,8 @@
               >
                 !
               </div>
-              <span class="font-bold">NOTE:</span> Exact challenge details
-              remain locked until competition day.
+              <span class="font-bold">NOTE:</span> The full challenge briefs
+              are now available to download on this page.
             </div>
           </div>
         </div>
@@ -1689,8 +1768,8 @@
               <div class="text-white">
                 challenge:
                 <span
-                  class="text-jam-orange font-bold bg-jam-orange/20 px-2 py-0.5 animate-pulse"
-                  >LOCKED</span
+                  class="text-jam-orange font-bold bg-jam-orange/20 px-2 py-0.5"
+                  >RELEASED</span
                 >
               </div>
               <div class="text-white">event: WebForge 2026</div>
@@ -1725,7 +1804,7 @@
               class="flex flex-col sm:flex-row gap-6 w-full max-w-2xl justify-center z-10"
             >
               <a
-                href="#workflow"
+                href="#challenge"
                 class="bg-jam-teal text-jam-text border-4 border-white px-8 py-4 font-black text-xl hover:translate-x-1 hover:translate-y-1 hover:bg-white transition-all shadow-[6px_6px_0px_0px_#FFFFFF] hover:shadow-none uppercase flex-1 whitespace-nowrap text-center"
               >
                 View The Challenge →
